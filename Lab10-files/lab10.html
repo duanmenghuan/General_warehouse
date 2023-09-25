@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<title>AST20963 Coffee Shop</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div id="container">
+		<div id="header">
+			<h1>AST20963 Coffee Shop</h1>
+		</div>
+		<div id="slideshow">
+			<img src="./slider./photo01.jpg">
+			<img src="./slider./photo02.jpg">
+			<img src="./slider./photo03.jpg">
+			<img src="./slider./photo04.jpg">
+			<img src="./slider./photo05.jpg">
+			<img src="./slider./photo06.jpg">
+		</div>
+
+
+
+		
+		<div id="leftcolumn">
+			<a class="navBar" href="lab6.html">Home</a>
+			<a class="navBar" href="menu.html">Menu</a>
+			<a class="navBar" href="music.html">Music</a>
+			<a class="navBar" href="jobs.html">Jobs</a>
+		</div>
+		
+		<div id="rightcolumn">
+			<p>Come in and experience...</p>
+			<img class="floatright" src="coffee.jpg" alt="coffee cup" width="200" height="200">
+			<ul>
+				<li>Specialty Coffee and Tea</li>
+				<li>Freshly made sandwiches</li>
+				<li>Bagels, Muffins, and Organic Snacks</li>
+				<li>Music and Poetry Readings</li>
+				<li>Open until 10pm</li>
+				<li> ... </li>
+			</ul>
+			<p>Tat Chee Avenue <br> Kowloon, Hong Kong <br> +852 2100 0000</p>
+		</div>
+		
+		<div id="footer">Copyright &copy; 2020 AST20963 Coffee Shop<br>
+			<a href="mailto:coffee@ast20963.com">coffee@ast20963.com</a>
+		</div>
+	</div>
+</body>
+<script>
+	var slideIndex = 0;
+showSlides();
+
+function showSlides() {
+	var i;
+	var slides = document.getElementById("slideshow").getElementsByTagName("img");
+	for (i = 0; i < slides.length; i++) {
+		slides[i].classList.remove("active");
+	}
+	slideIndex++;
+	if (slideIndex > slides.length) {slideIndex = 1}
+	slides[slideIndex-1].classList.add("active");
+	setTimeout(showSlides, 5000); // 切换时间为5秒
+}
+
+</script>
+</html>
+
+

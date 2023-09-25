@@ -1,0 +1,41 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>电影影评网</title>
+    </head>
+    <body>
+        {% extends 'bootstrap/base.html' %} 
+{% block title %} Web System Project {% endblock %} 
+{% block navbar %} 
+<div class="navbar navbar-inverse" role="navigation">
+ <div class="container">
+ <div class="navbar-header">
+ <a class="navbar-brand" href=" "> Web System Project - Music
+Search</ a>
+ </div>
+ </div>
+</div>
+ {% endblock %} 
+ {% block content %} 
+<div class="container" >
+ <div class="page-header">
+ <form action="./search">
+ <div class="form-group" style="max-width:600px;">
+ <label for="musician_name">Musician Name</label>
+ <input type="text" class="form-control" name="musician_name"
+id="musician_name" aria-describedby="music_help" placeholder="Enter a name
+of musician">  <small id="musicianHelp" class="form-text text-muted">如果你输入歌手的名字，它就会找到一首歌。.</small>
+ </div>
+ <button type="submit" class="btn btn-primary">Submit</button> 
+ </form>
+ <br/>
+ <br/>
+ <!-- Music Search 结果显示位置 -->
+ </div>
+</div>
+ {% endblock %}
+    </body>
+    </html>
