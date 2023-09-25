@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<title>我的咨询</title>
+
+
+<link rel="stylesheet" th:href="@{/sources/css/base.css}"/>
+<link rel="stylesheet" th:href="@{/sources/css/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/sources/css/component.css}"/>
+<link rel="stylesheet" th:href="@{/sources/css/normalize.css}"/>
+<link rel="stylesheet" th:href="@{/sources/css/font-awesome-4.7.0/css/font-awesome.css}"/>
+<link th:href="@{/sources/css/bootstrap-table.min.css}" rel="stylesheet"/>
+
+<script th:src="@{/sources/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/sources/js/bootstrap-table.min.js}"></script>
+<script th:src="@{/sources/js/bootstrap-table-zh-CN.min.js}"></script>
+<script th:src="@{/sources/js/bootstrap.js}"></script>
+<script th:src="@{/sources/js/modernizr.custom.js}"></script>
+
+</head>
+<body>
+<div class="wrap">
+    <!--    抽签公共片段  导航栏-->
+    <div th:insert="~{/student/student_index.html::student_navigation}"></div>
+
+    <div class="container">
+        <div class="row">
+            <section>
+                <div class="col-lg-8 col-lg-offset-2">
+                    <div class="page-header">
+                        <h2>个人信息设置</h2>
+                    </div>
+
+                    <ul class="nav nav-tabs">
+                        <li><a th:href="@{/student/toStuInfoPwd}">修改密码</a></li>
+                        <li><a th:href="@{/student/toStuInfoResume}">个人资料</a></li>
+                        <li><a th:href="@{/student/toStuInfoApply}">我的申请</a></li>
+                        <li class="active"><a th:href="@{/student/toConsultation}">我的咨询</a></li>
+                    </ul>
+                    <div th:if="${consultationList.isEmpty()}">
+                        <h3>您还没有咨询记录！</h3>
+                    </div>
+                    <div th:if="!${consultationList.isEmpty()}">
+                        <h3><b><span class="fa fa-th-list"></span>&nbsp; &nbsp; 您的咨询记录</b></h3>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th>编号</th>
+                                    <th>咨询职位</th>
+                                    <th>咨询企业</th>
+                                    <th>咨询时间</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="consultation,consultationStat:${consultationList}">
+                                    <td>[[${consultationStat.count}]]</td>
+                                    <td>[[${consultation.position.positionName}]]</td>
+                                    <td>[[${consultation.position.company.companyName}]]</td>
+                                    <td>[[${consultation.consultationDate}]]</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a class="btn btn-xs btn-default" th:href="@{'/student/reply/consultation/' + ${consultation.consultationId}}" title="回复"  data-toggle="tooltip">回复</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script>
+
+</script>
+</body>
+</html>

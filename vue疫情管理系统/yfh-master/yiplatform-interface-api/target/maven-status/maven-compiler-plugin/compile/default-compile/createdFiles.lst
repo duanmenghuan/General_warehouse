@@ -1,0 +1,15 @@
+cn/yiplatform/service/UserService.class
+cn/yiplatform/entity/VaccinationRecord.class
+cn/yiplatform/entity/User.class
+cn/yiplatform/service/EpidemicService.class
+cn/yiplatform/service/BusinessReportService.class
+cn/yiplatform/entity/TemperatureReport.class
+cn/yiplatform/entity/NatReport.class
+cn/yiplatform/entity/BusinessReport.class
+cn/yiplatform/entity/TeleWorkRecord.class
+cn/yiplatform/service/NatReportService.class
+cn/yiplatform/service/VaccinationRecordService.class
+cn/yiplatform/service/TeleWorkRecordService.class
+cn/yiplatform/entity/ProvinceData.class
+cn/yiplatform/entity/Menu.class
+cn/yiplatform/service/TemperatureReportService.class

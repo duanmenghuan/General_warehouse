@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.dao.BingfangMapper">
+
+    <resultMap id="BaseResultMap" type="com.demo.vo.Bingfang" >
+            <result column="id" property="id" />
+            <result column="bingfang_no" property="bingfangNo" />
+            <result column="bingfang_name" property="bingfangName" />
+            <result column="bingfang_type" property="bingfangType" />
+            <result column="bingfang_count" property="bingfangCount" />
+            <result column="bingfang_price" property="bingfangPrice" />
+            <result column="bingfang_text" property="bingfangText" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        `id`,`bingfang_no`,`bingfang_name`,`bingfang_type`,`bingfang_count`,`bingfang_price`,`bingfang_text`
+    </sql>
+
+    <!--新增-->
+    <insert id="doCreate" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.demo.vo.Bingfang">
+        INSERT INTO `t_bingfang`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                    <if test ='id != null'>`id`,</if>
+                    <if test ='bingfangNo != null'>`bingfang_no`,</if>
+                    <if test ='bingfangName != null'>`bingfang_name`,</if>
+                    <if test ='bingfangType != null'>`bingfang_type`,</if>
+                    <if test ='bingfangCount != null'>`bingfang_count`,</if>
+                    <if test ='bingfangPrice != null'>`bingfang_price`,</if>
+                    <if test ='bingfangText != null'>`bingfang_text`</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                    <if test ='id != null'>#{id},</if>
+                    <if test ='bingfangNo != null'>#{bingfangNo},</if>
+                    <if test ='bingfangName != null'>#{bingfangName},</if>
+                    <if test ='bingfangType != null'>#{bingfangType},</if>
+                    <if test ='bingfangCount != null'>#{bingfangCount},</if>
+                    <if test ='bingfangPrice != null'>#{bingfangPrice},</if>
+                    <if test ='bingfangText != null'>#{bingfangText}</if>
+        </trim>
+    </insert>
+
+    <!--批量删除-->
+    <delete id="doRemoveBatch" parameterType="java.util.Collection">
+        DELETE FROM `t_bingfang` WHERE `id` IN
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--修改-->
+    <update id="doUpdate" parameterType="com.demo.vo.Bingfang">
+        UPDATE `t_bingfang`
+        <set>
+                <if test ='id != null'>`id` = #{id},</if>
+                <if test ='bingfangNo != null'>`bingfang_no` = #{bingfangNo},</if>
+                <if test ='bingfangName != null'>`bingfang_name` = #{bingfangName},</if>
+                <if test ='bingfangType != null'>`bingfang_type` = #{bingfangType},</if>
+                <if test ='bingfangCount != null'>`bingfang_count` = #{bingfangCount},</if>
+                <if test ='bingfangPrice != null'>`bingfang_price` = #{bingfangPrice},</if>
+                <if test ='bingfangText != null'>`bingfang_text` = #{bingfangText}</if>
+        </set>
+        WHERE `id` = #{id}
+    </update>
+
+    <!--获取-->
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> FROM `t_bingfang` WHERE `id` = #{id}
+    </select>
+
+    <!--列表-->
+    <select id="findAllSplit" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> FROM `t_bingfang`
+        <where>
+            <if test="searchColumn != null and searchColumn != '' and keyword != null and keyword != ''">
+                ${searchColumn} LIKE CONCAT('%',#{keyword},'%')  AND
+            </if>
+            1=1
+        </where>
+        ORDER BY id ASC
+        <if test="startIndex != null and pageSize != null">
+            LIMIT #{startIndex},#{pageSize};
+        </if>
+    </select>
+    <!--数量-->
+    <select id="getAllCount" parameterType="java.util.Map" resultType="Integer">
+        SELECT COUNT(*) FROM `t_bingfang`
+        <where>
+            <if test="searchColumn != null and searchColumn != '' and keyword != null and keyword != ''">
+                ${searchColumn} LIKE CONCAT('%',#{keyword},'%')  AND
+            </if>
+            1=1
+        </where>
+    </select>
+</mapper>

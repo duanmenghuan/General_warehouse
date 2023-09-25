@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lewis.recruit.mappers.PositionMapper">
+    <resultMap id="position_company" type="Position">
+        <id property="positionId" column="position_id" />
+        <result property="positionCompany" column="position_company"/>
+        <result property="positionName" column="position_name"/>
+        <result property="positionFresh" column="position_fresh"/>
+        <result property="positionMinSalary" column="position_min_salary"/>
+        <result property="positionMaxSalary" column="position_max_salary"/>
+        <result property="positionQuota" column="position_quota"/>
+        <result property="positionCity" column="position_city"/>
+        <result property="positionRequire" column="position_require"/>
+        <result property="positionDescription" column="position_description"/>
+        <result property="positionWelfare" column="position_welfare"/>
+        <result property="positionRelease" column="position_release"/>
+        <result property="positionStatus" column="position_status"/>
+        <result property="positionRemark" column="position_remark"/>
+        <association property="company" javaType="com.lewis.recruit.pojo.Company">
+            <id property="companyId" column="company_id"/>
+            <result property="companyNo" column="company_no"/>
+            <result property="companyName" column="company_name"/>
+            <result property="companyContact" column="company_contact"/>
+            <result property="companyPhone" column="company_phone"/>
+            <result property="companyEmail" column="company_email"/>
+            <result property="companyCode" column="company_code"/>
+            <result property="companyAddress" column="company_address"/>
+            <result property="companyDescribe" column="company_describe"/>
+        </association>
+    </resultMap>
+    <sql id="select_position_list">
+        select
+            p.position_id,p.position_company,p.position_name,p.position_fresh,p.position_min_salary,p.position_max_salary,
+            p.position_quota,p.position_city,p.position_require,
+            p.position_description,p.position_welfare,p.position_release,p.position_status,p.position_remark,
+            c.company_id,c.company_no,c.company_contact,c.company_phone,c.company_name,
+            c.company_email,c.company_code,c.company_address,c.company_describe
+        from position p
+        left join company c on p.position_company=c.company_id
+    </sql>
+<!--    查询所有职位信息-->
+    <select id="getPositionList" resultMap="position_company">
+       <include refid="select_position_list" />
+    </select>
+
+    <select id="getPositionYesList" resultMap="position_company">
+        <include refid="select_position_list" />
+        where position_status = '2'
+    </select>
+
+    <select id="getPositionFreshList" resultMap="position_company">
+        <include refid="select_position_list" />
+        where position_status = '2' and position_fresh = 0
+    </select>
+
+<!--    根据职位id查询职位-->
+    <select id="getPositionByPositionId" resultMap="position_company">
+        <include refid="select_position_list" />
+        where position_Id = #{positionId}
+    </select>
+
+<!--    根据职位名称查询职位-->
+    <select id="getPositionByKey" resultMap="position_company">
+        <include refid="select_position_list" />
+         where position_name like concat('%', #{positionName}, '%') and position_status = '2'
+    </select>
+
+    <!--    根据职位名称查询职位-->
+    <select id="getPositionFreshByKey" resultMap="position_company">
+        <include refid="select_position_list" />
+        where position_name like concat('%', #{positionName}, '%') and position_status = '2' and position_fresh = 0
+    </select>
+
+<!--    根据公司id查询职位-->
+    <select id="getPositionByCompanyId" resultMap="position_company">
+        <include refid="select_position_list" />
+        where position_company = #{positionCompany}
+    </select>
+
+    <insert id="addPosition" parameterType="Position" keyProperty="positionId" useGeneratedKeys="true">
+        insert into position
+        (position_company,position_name,position_fresh,position_min_salary,position_max_salary,
+        position_quota,position_city,position_release,
+        <trim suffix=")" suffixOverrides=",">
+            <if test="positionRequire != null and positionRequire != ''">
+                position_require,
+            </if>
+            <if test="positionDescription != null and positionDescription != ''">
+                position_description,
+            </if>
+            <if test="positionWelfare != null and positionWelfare != ''">
+                position_welfare,
+            </if>
+            position_status
+        </trim>
+        values (#{positionCompany},#{positionName},#{positionFresh},#{positionMinSalary},#{positionMaxSalary},
+        #{positionQuota},#{positionCity}, now(),
+        <trim  suffix=")" suffixOverrides=",">
+            <if test="positionRequire != null and positionRequire !=''">
+                #{positionRequire},
+            </if>
+            <if test="positionDescription != null and positionDescription != ''">
+                #{positionDescription},
+            </if>
+            <if test="positionWelfare != null and positionWelfare != ''">
+                #{positionWelfare},
+            </if>
+            1
+        </trim>
+    </insert>
+
+    <update id="updatePosition" parameterType="Position">
+        update position
+        <set>
+            <if test="positionName != null and positionName != ''">
+                position_name = #{positionName},
+            </if>
+            <if test="positionFresh != null and positionFresh != ''">
+                position_fresh = #{positionFresh},
+            </if>
+            <if test="positionMinSalary != null and positionMinSalary != ''">
+                position_min_salary = #{positionMinSalary},
+            </if>
+            <if test="positionMaxSalary != null and positionMaxSalary != ''">
+                position_max_salary = #{positionMaxSalary},
+            </if>
+            <if test="positionQuota != null and positionQuota != ''">
+                position_quota = #{positionQuota},
+            </if>
+            <if test="positionCity != null and positionCity != ''">
+                position_city = #{positionCity},
+            </if>
+            <if test="positionRequire != null and positionRequire != ''">
+                position_require = #{positionRequire},
+            </if>
+            <if test="positionDescription != null and positionDescription != ''">
+                position_description = #{positionDescription},
+            </if>
+            <if test="positionWelfare != null and positionWelfare != ''">
+                position_welfare = #{positionWelfare},
+            </if>
+        </set>
+        <where>
+            position_id = #{positionId}
+        </where>
+    </update>
+
+    <update id="auditPosition" parameterType="Position">
+        update position
+        <set>
+            <if test="positionStatus != null and positionStatus != ''">
+                position_status = #{positionStatus},
+            </if>
+            <if test="positionRemark != null and positionRemark != ''">
+                position_remark = #{positionRemark},
+            </if>
+        </set>
+        <where>
+            position_id = #{positionId}
+        </where>
+    </update>
+
+    <delete id="deletePosition" parameterType="java.lang.Integer">
+        delete from position where position_id = #{positionId}
+    </delete>
+
+</mapper>

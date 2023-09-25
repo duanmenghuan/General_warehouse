@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>职位详情</title>
+
+    <link th:href="@{/sources/css/bootstrap.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/sources/css/bootstrapValidator.css}"/>
+    <link th:href="@{/sources/css/materialdesignicons.min.css}" rel="stylesheet">
+    <link th:href="@{/sources/css/style.min.css}" rel="stylesheet">
+
+    <script th:src="@{/sources/js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/bootstrapValidator.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/perfect-scrollbar.min.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/main.min.js}"></script>
+</head>
+
+<body>
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <!--左侧导航-->
+        <div th:insert="~{/company/company_index.html::company_side}"></div>
+        <!--End 左侧导航-->
+
+        <!--头部信息-->
+        <div th:insert="~{/company/company_index.html::company_header}"></div>
+        <!--End 头部信息-->
+
+        <!--页面主要内容-->
+        <main class="lyear-layout-content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3><b><span class="mdi mdi-menu"></span>&nbsp; &nbsp; 职位信息</b></h3>
+                                <br/>
+
+                                <h4>一、岗位职责：</h4>
+                                <div style="white-space: pre-line;line-height: 25px">[[${position.positionDescription}]]</div>
+                                <br/><br/>
+
+                                <h4>二、任职要求：</h4>
+                                <div style="white-space: pre-line;line-height: 25px;color: red">[[${position.positionFresh} == 1 ? '应届生' : '']]</div>
+                                <div style="white-space: pre-line;line-height: 25px">[[${position.positionRequire}]]</div>
+
+                                <br/><br/>
+
+                                <h4>三、福利待遇：</h4>
+                                <div style="white-space: pre-line;line-height: 25px">[[${position.positionWelfare} == null ? '暂无信息' : ${position.positionWelfare}]]</div>
+                                <br/><br/>
+
+                                <h4>四、公司地址：</h4>
+                                <span class="mdi mdi-map-marker"></span>&nbsp; &nbsp; [[${position.company.companyAddress}]]<br/><br/>
+
+                                <h4>五、公司邮箱：</h4>
+                                <span class="mdi mdi-email"></span>&nbsp; &nbsp; [[${position.company.companyEmail}]]<br/><br/>
+                                <hr/>
+
+                                <h3><b><span class="mdi mdi-account-card-details"></span>&nbsp; &nbsp; 公司信息</b></h3>
+                                <div style="white-space: pre-line;line-height: 25px" th:text="${position.company.companyDescribe} == null ? '暂无公司简介': ${position.company.companyDescribe}">
+                                </div>
+
+                                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+        <!--End 页面主要内容-->
+    </div>
+</div>
+</body>
+</html>

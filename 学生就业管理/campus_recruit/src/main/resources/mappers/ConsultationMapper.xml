@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lewis.recruit.mappers.ConsultationMapper">
+    <resultMap id="consultationMap" type="com.lewis.recruit.pojo.Consultation">
+        <id property="consultationId" column="consultation_id"/>
+        <result property="studentId" column="student_id"/>
+        <result property="type" column="type"/>
+        <result property="teacherId" column="teacher_id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="positionId" column="position_id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="content" column="content"/>
+        <result property="consultationDate" column="consultation_date"/>
+        <association property="position" javaType="com.lewis.recruit.pojo.Position">
+            <result property="positionName" column="position_name"/>
+            <association property="company" javaType="com.lewis.recruit.pojo.Company">
+                <result property="companyName" column="company_name"/>
+            </association>
+        </association>
+        <association property="student" javaType="com.lewis.recruit.pojo.Student">
+            <result property="studentName" column="student_name"/>
+        </association>
+        <association property="teacher" javaType="com.lewis.recruit.pojo.Teacher">
+            <result property="teacherName" column="teacher_name"/>
+        </association>
+    </resultMap>
+
+    <insert id="addConsultation" parameterType="Consultation" keyProperty="consultationId" useGeneratedKeys="true">
+        insert into consultation(student_id,type,parent_id,teacher_id,position_id,company_id,content,consultation_date)
+        values (#{studentId}, #{type},#{parentId},#{teacherId},#{positionId},#{companyId},#{content},NOW())
+    </insert>
+
+    <delete id="deleteByConsultationId" parameterType="java.lang.Integer">
+        delete from consultation where consultation_id = #{consultationId}
+    </delete>
+
+    <!--    根据公司id查询咨询-->
+    <select id="getConsultationByCompanyId" resultMap="consultationMap">
+        select c.*,s.student_name,cc.company_name,p.position_name,t.teacher_name from consultation c left join student s on c.student_id = s.student_id
+        left join company cc on c.company_id = cc.company_id
+        left join position p on c.position_id = p.position_id
+        left join teacher t on c.teacher_id = t.teacher_id
+        where c.company_id = #{companyId} and c.type = 1 and c.parent_id is null
+    </select>
+
+    <!--    根据老师id查询咨询-->
+    <select id="getConsultationByTeacherId" resultMap="consultationMap">
+        select c.*,s.student_name,cc.company_name,p.position_name,t.teacher_name from consultation c
+        left join student s on c.student_id = s.student_id
+        left join company cc on c.company_id = cc.company_id
+        left join position p on c.position_id = p.position_id
+        left join teacher t on t.teacher_no = s.student_classg
+        where t.teacher_id = #{teacherId} and c.type = 1 and c.parent_id is null
+    </select>
+
+    <!--    根据学生id查询咨询-->
+    <select id="getConsultationByStudentId" resultMap="consultationMap">
+        select c.*,s.student_name,cc.company_name,p.position_name,t.teacher_name from consultation c left join student s on c.student_id = s.student_id
+        left join company cc on c.company_id = cc.company_id
+        left join position p on c.position_id = p.position_id
+        left join teacher t on c.teacher_id = t.teacher_id
+        where c.student_id = #{studentId} and c.type = 1 and c.parent_id is null
+    </select>
+
+    <!--    根据id查询咨询-->
+    <select id="getConsultationById" resultMap="consultationMap">
+        select c.*,s.student_name,cc.company_name,p.position_name,t.teacher_name from consultation c left join student s on c.student_id = s.student_id
+        left join company cc on c.company_id = cc.company_id
+        left join position p on c.position_id = p.position_id
+        left join teacher t on c.teacher_id = t.teacher_id
+        where c.consultation_id = #{consultationId}
+    </select>
+
+    <!--    根据id回复查询咨询-->
+    <select id="getConsultationByParentId" resultMap="consultationMap">
+        select c.*,s.student_name,cc.company_name,p.position_name,t.teacher_name from consultation c left join student s on c.student_id = s.student_id
+        left join company cc on c.company_id = cc.company_id
+        left join position p on c.position_id = p.position_id
+        left join teacher t on c.teacher_id = t.teacher_id
+        where c.parent_id = #{consultationId}
+    </select>
+</mapper>

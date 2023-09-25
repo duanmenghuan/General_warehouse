@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <title>修改密码</title>
+
+    <link rel="stylesheet" th:href="@{/sources/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/bootstrapValidator.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/font-awesome-4 .7.0/css/font-awesome.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/component.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/normalize.css}"/>
+
+    <script th:src="@{/sources/js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/bootstrapValidator.js}"></script>
+    <script th:src="@{/sources/js/modernizr.custom.js}"></script>
+</head>
+<body>
+<div class="wrap">
+    <!--    抽签公共片段  导航栏-->
+    <div th:insert="~{/student/student_index.html::student_navigation}"></div>
+
+    <div class="container">
+        <div class="row">
+            <section>
+                <div class="col-lg-8 col-lg-offset-2">
+                    <div class="page-header">
+                        <h2>个人信息设置</h2>
+                    </div>
+
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a th:href="@{/student/toStuInfoPwd}">修改密码</a></li>
+                        <li><a th:href="@{/student/toStuInfoResume}">个人资料</a></li>
+                        <li><a th:href="@{/student/toStuInfoApply}">我的申请</a></li>
+                        <li><a th:href="@{/student/toConsultation}">我的咨询</a></li>
+                    </ul>
+
+                    <form id="upForm" name="upForm" method="post" class="form-horizontal" th:action="@{/student/updateStudentByStuId}" style="margin-top: 20px;">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="info-tab">
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">用户账号：</label>
+                                    <div class="col-lg-5">
+                                        <input class="form-control col-lg-3" type="text"  id="stuAccount" disabled th:value="${student.getStudentAccount()}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="oldPassword">请输入原密码：</label>
+                                    <div class="col-lg-5">
+                                        <input class="form-control col-lg-3" type="password"  id="oldPassword" name="oldPassword">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="newPassword">请输入新密码：</label>
+                                    <div class="col-lg-5">
+                                        <input class="form-control col-lg-3" type="password"  id="newPassword" name="newPassword">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="confirmPassword">再次确认密码：</label>
+                                    <div class="col-lg-5">
+                                        <input class="form-control col-lg-3" type="password"  id="confirmPassword" name="confirmPassword">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-5 col-lg-offset-4">
+                                <button type="submit" class="col-lg-5 btn btn-primary" id="updateBtn" onclick="{if(confirm('您确定要修改密码吗?')){
+                                            this.document.updateComPwd.submit();
+                                            return true;}return false;
+                                }">修改密码</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#upForm").bootstrapValidator({
+            message: 'This value is not valid',
+            live: 'enable',//验证时机，enabled是内容有变化就验证（默认），disabled和submitted是提交再验证
+            excluded: [':disabled', ':hidden'],//排除无需验证的控件，比如被禁用的或者被隐藏的
+            //提供输入验证图标提示
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                oldPassword: {
+                    threshold:  6 , //有6字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
+                    validators: {
+                        notEmpty: {
+                            message: '原密码不能为空'
+                        },
+                        //实用ajax判断原密码是否正确
+                        remote: {
+                            url: '/student/verify',
+                            message: "原密码输入错误",
+                            delay: 1300,
+                            type: 'POST'
+                        }
+                    }
+                },
+                newPassword: {
+                    enabled: false,
+                    validators: {
+                        notEmpty: {
+                            message: '新密码不能为空'
+                        },
+                        stringLength: {
+                            min: 6,
+                            max: 12,
+                            message: '新密码长度必须在6到12位之间'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_]+$/,
+                            message: '密码只能包含大写、小写、数字和下划线'
+                        },
+                        identical: {
+                            field: 'confirmPassword',
+                            message: '两次输入的密码不一致'
+                        },
+                        different: {
+                            field: 'oldPassword',
+                            message: '新密码不能与原密码相同'
+                        }
+                    }
+                },
+                confirmPassword: {
+                    validators: {
+                        notEmpty: {
+                            message: '确认密码不能为空'
+                        },
+                        identical: {
+                            field: 'newPassword',
+                            message: '两次输入的密码不一致'
+                        }
+                    }
+                }
+            },
+        });
+        $("#upForm").find('[name="oldPassword"]').on('keyup', function() {
+            $("#upForm").bootstrapValidator('enableFieldValidators', 'oldPassword')
+        });
+        //如果密码不为空，则启用密码/确认密码验证器
+        $("#upForm").find('[name="newPassword"]').on('keyup', function() {
+            var isEmpty = $(this).val() == '';
+            $("#upForm").bootstrapValidator('enableFieldValidators', 'oldPassword', !isEmpty)
+                .bootstrapValidator('enableFieldValidators', 'newPassword', !isEmpty)
+                .bootstrapValidator('enableFieldValidators', 'confirmPassword', !isEmpty);
+            if ($(this).val().length == 6) {
+                $("#upForm").bootstrapValidator('validateField', 'newPassword')
+                    .bootstrapValidator('validateField', 'confirmPassword');
+            }
+        });
+    });
+</script>
+</body>
+</html>

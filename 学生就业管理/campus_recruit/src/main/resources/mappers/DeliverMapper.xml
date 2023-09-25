@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lewis.recruit.mappers.DeliverMapper">
+    <resultMap id="stuDeliverMap" type="com.lewis.recruit.pojo.Deliver">
+        <id property="deliverId" column="deliver_id"/>
+        <result property="studentId" column="student_id"/>
+        <result property="positionId" column="position_id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="deliverState" column="deliver_state"/>
+        <result property="deliverDate" column="deliver_date"/>
+        <association property="position" javaType="com.lewis.recruit.pojo.Position">
+            <result property="positionName" column="position_name"/>
+            <association property="company" javaType="com.lewis.recruit.pojo.Company">
+                <result property="companyName" column="company_name"/>
+            </association>
+        </association>
+    </resultMap>
+
+    <insert id="addDeliver" parameterType="Deliver" keyProperty="deliverId" useGeneratedKeys="true">
+        insert into deliver(student_id,position_id,company_id,deliver_state,deliver_date)
+        values (#{studentId}, #{positionId},#{companyId},1,NOW())
+    </insert>
+
+<!--    <update id="updateDeliverStateByPositionAndStudent" parameterType="java.lang.Integer">
+        update deliver set deliver_state = #{result} where position_id = #{positionId} and student_id = #{studentId}
+    </update>-->
+
+    <delete id="deleteDeliverByDeliverId" parameterType="java.lang.Integer">
+        delete from deliver where deliver_id = #{deliverId}
+    </delete>
+
+    <select id="getDeliverByStudentId" resultMap="stuDeliverMap">
+        select
+         d.deliver_id, p.position_id, p.position_name, c.company_name, d.deliver_state, d.deliver_date
+        from deliver d
+         left join position p on d.position_id = p.position_id
+         left join company c on p.position_company = c.company_id
+         where student_id = #{studentId}
+    </select>
+
+    <select id="getDeliverByStudentAndPosition" resultType="Deliver">
+        select * from deliver where student_id = #{studentId} and position_id = #{positionId}
+    </select>
+
+    <select id="deliverResumeCount" parameterType="Integer" resultType="Integer">
+        select count(*) from deliver where position_id = #{positionId}
+    </select>
+
+</mapper>

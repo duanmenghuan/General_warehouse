@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sjsq.mapper.UserMapper">
+    <resultMap type="users" id="umap">
+        <collection property="menus" select="com.sjsq.mapper.MenuMapper.selByRidPid"
+                    column="{roleid=userlevel,fatherid=fatherid}"></collection>
+    </resultMap>
+    <select id="login" resultMap="umap">
+ 		select 1 fatherid,u.* from users u where (username=#{auth} or phone=#{auth} or identity=#{auth}) and userpwd=#{userpwd}
+ 	</select>
+
+    <select id="selUser" resultType="Users">
+        select * from users u
+        <where>
+            <if test="identity!=null and identity!=''">
+                <bind name="identity" value="'%'+identity+'%'"/>
+                and u.identity like #{identity}
+            </if>
+            <if test="username!=null and username!=''">
+                <bind name="username" value="'%'+username+'%'"/>
+                and u.username like #{username}
+            </if>
+            <if test="phone!=null and phone!=''">
+                <bind name="phone" value="'%'+phone+'%'"/>
+                and u.phone like #{phone}
+            </if>
+        </where>
+    </select>
+</mapper>

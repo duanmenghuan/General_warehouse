@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.yiplatform.mapper.TeleWorkRecordMapper">
+
+    <resultMap id="BaseResultMap" type="cn.yiplatform.entity.TeleWorkRecord">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="uid" column="uid" jdbcType="BIGINT"/>
+        <result property="startDate" column="start_date" jdbcType="TIMESTAMP"/>
+        <result property="endDate" column="end_date" jdbcType="TIMESTAMP"/>
+        <result property="reason" column="reason" jdbcType="VARCHAR"/>
+        <result property="teleWorkLocation" column="tele_work_location" jdbcType="VARCHAR"/>
+        <result property="teleWorkLocationDetail" column="tele_work_location_detail" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="submitDate" column="submit_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,uid,start_date,end_date,
+        reason,tele_work_location,tele_work_location_deatil,status,submit_date
+    </sql>
+    <select id="selectAllByIds" resultMap="BaseResultMap">
+        select *
+        from tele_work_record join user
+        on tele_work_record.uid = user.id
+        where user.id in
+        <if test="idList != null">
+            <foreach close=")" collection="idList" item="id" open="("
+                     separator=",">
+                #{id}
+            </foreach>
+        </if>
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select *
+        from tele_work_record join user
+        on tele_work_record.uid = user.id
+    </select>
+
+    <select id="selectAllLikeAccount" resultMap="BaseResultMap">
+        select *
+        from tele_work_record join user
+        on tele_work_record.uid = user.id
+        where account like #{account}
+    </select>
+    <select id="selectAllByIdsAndCreateTimeBetween" resultMap="BaseResultMap">
+        select *
+        from tele_work_record join user
+        on tele_work_record.uid = user.id
+        where user.id in
+        <if test="idList != null">
+            <foreach close=")" collection="idList" item="id" open="("
+                     separator=",">
+                #{id}
+            </foreach>
+        </if>
+        AND submit_date between #{beginCreateTime} and #{endCreateTime}
+    </select>
+    <select id="selectAllByWrappers" resultMap="BaseResultMap">
+        select *
+        from tele_work_record join user
+        on tele_work_record.uid = user.id
+        where 1 = 1
+        <if test="idList != null and idList.size() > 0">
+            and user.id in
+            <foreach close=")" collection="idList" item="id" open="("
+                     separator=",">
+                #{id}
+            </foreach>
+        </if>
+        <if test="beginSubmitTime != null and endSubmitTime != null">
+            AND submit_date between #{beginSubmitTime} and #{endSubmitTime}
+        </if>
+        <if test="account != null">
+            AND account like #{account}
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        order by submit_date desc
+    </select>
+
+    <select id="selectByRecordId" resultMap="BaseResultMap">
+        select *
+        from tele_work_record join user
+        on tele_work_record.uid = user.id
+        where tele_work_record.id = #{recordId}
+    </select>
+</mapper>

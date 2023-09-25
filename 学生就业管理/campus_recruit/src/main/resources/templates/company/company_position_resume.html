@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>简历列表</title>
+
+    <link th:href="@{/sources/css/bootstrap.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/sources/css/bootstrapValidator.css}"/>
+    <link th:href="@{/sources/css/materialdesignicons.min.css}" rel="stylesheet">
+    <link th:href="@{/sources/css/style.min.css}" rel="stylesheet">
+    <link th:href="@{/sources/css/bootstrap-table.min.css}" rel="stylesheet"/>
+
+    <script th:src="@{/sources/js/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/sources/js/bootstrap-table.min.js}"></script>
+    <script th:src="@{/sources/js/bootstrap-table-zh-CN.min.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/bootstrapValidator.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/perfect-scrollbar.min.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/main.min.js}"></script>
+</head>
+
+<body>
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <!--左侧导航-->
+        <div th:insert="~{/company/company_index.html::company_side}"></div>
+        <!--End 左侧导航-->
+
+        <!--头部信息-->
+        <div th:insert="~{/company/company_index.html::company_header}"></div>
+        <!--End 头部信息-->
+
+        <!--页面主要内容-->
+        <main class="lyear-layout-content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card" th:if="${studentList.isEmpty()}">
+                            <div class="card-body">
+                                <h2>该职位暂时还没收到简历，请耐心等候！<span class="mdi mdi-rocket"></span><span class="mdi mdi-rocket"></span><span class="mdi mdi-rocket"></span>  </h2>
+                            </div>
+                        </div>
+                        <div class="card" th:if="!${studentList.isEmpty()}">
+                            <div class="card-toolbar clearfix">
+                                <div class="toolbar-btn-action">
+                                    <h2>投递的简历列表：</h2>
+                                </div>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped" id="studentTable">
+                                        <thead>
+                                        <tr>
+                                            <th>编号</th>
+                                            <th>学号</th>
+                                            <th>姓名</th>
+                                            <th>班级</th>
+                                            <th>电话</th>
+                                            <th>邮箱</th>
+                                            <th>个人简历</th>
+                                            <th>就业状态</th>
+                                            <th>状态</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="student,studentStat:${studentList}">
+                                            <td>[[${studentStat.count}]]</td>
+                                            <td>[[${student.studentNo}]]</td>
+                                            <td>[[${student.studentName}]]</td>
+                                            <td>[[${student.studentClassg}]]</td>
+                                            <td>[[${student.studentPhone}]]</td>
+                                            <td>[[${student.studentEmail}]]</td>
+                                            <td>[[${student.studentResume}]]</td>
+                                            <td>[[${student.studentEmployment}==1 ? '待就业' : '已就业']]</td>
+                                            <td> [[${student.deliver.deliverState}==1 ? '待审核' : (${student.deliver.deliverState}==2 ? '已通过': '未通过')]]</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <form th:if="${student.deliver.deliverState == 1}" th:action="@{'/company/audit/resume/' + ${student.studentId}}" method="post">
+                                                        <input type="hidden" name="positionId" th:value="${student.deliver.positionId}">
+                                                        <input type="hidden" name="result" th:value="2">
+                                                        <button type="submit" class="btn btn-xs btn-default"><i class="mdi mdi-pencil"></i>同意</button>
+                                                    </form>
+                                                    <form th:if="${student.deliver.deliverState == 1}" th:action="@{'/company/audit/resume/' + ${student.studentId}}" method="post">
+                                                        <input type="hidden" name="positionId" th:value="${student.deliver.positionId}">
+                                                        <input type="hidden" name="result" th:value="3">
+                                                        <button type="submit" class="btn btn-xs btn-default"><i class="mdi mdi-window-close"></i>拒绝</button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+        <!--End 页面主要内容-->
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        if (!('ontouchstart' in document.documentElement)) {
+            $('body').tooltip({selector: '[data-toggle="tooltip"]'});
+        };
+        $("#studentTable").bootstrapTable({
+            striped : true, //是否显示行间隔色
+            pageNumber : 1, //初始化加载第一页
+            pagination : true,//是否分页
+            sidePagination : 'client',//server:服务器端分页|client：前端分页
+            pageSize : 5,//单页记录数
+            search: true,
+            pageList : [ 5, 10],//可选择单页记录数
+            showRefresh : true,//刷新按钮
+
+        })
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<title>注册页面</title>
+
+
+<link rel="stylesheet" th:href="@{/sources/css/bootstrap.css}"/>
+<link rel="stylesheet" th:href="@{/sources/css/bootstrapValidator.css}"/>
+
+<script th:src="@{/sources/js/jquery-3.2.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/sources/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/sources/js/bootstrapValidator.js}"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+            <div class="page-header">
+                <h2>用户注册</h2>
+            </div>
+
+            <div class="panel-group" id="steps">
+                <!-- 学生注册表单 -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><a id="a1" data-toggle="collapse" data-parent="#steps" href="#stepOne">成为学生用户</a>
+                        </h4>
+                    </div>
+                    <div id="stepOne" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <form id="stuForm" method="post" class="form-horizontal" th:action="@{/student/register}">
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="studentAccount">用户名：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="studentAccount"
+                                               name="studentAccount"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="studentPassword">密码：</label>
+                                    <div class="col-lg-5">
+                                        <input type="password" class="form-control" id="studentPassword"
+                                               name="studentPassword"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="studentNo">学号：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="studentNo" name="studentNo"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="studentName">姓名：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="studentName" name="studentName"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="studentClassg">班级：</label>
+                                    <div class="col-lg-5">
+                                        <select class="form-control" name="studentClassg" id="studentClassg">
+                                            <option selected="selected" disabled>--请选择--</option>
+                                            <option value="Wlian">物联班</option>
+                                            <option value="Xguan">信管班</option>
+                                            <option value="Gzaojia">工程造价班</option>
+                                            <option value="Wli">物理班</option>
+                                            <option value="Smei">数媒班</option>
+                                            <option value="Rqi">燃气班</option>
+                                            <option value="Jhuan">建环班</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="studentMajor">专业：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="studentMajor" name="studentMajor"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="studentGrade">年级：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="studentGrade" name="studentGrade"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="studentPhone">电话：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="studentPhone" name="studentPhone"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="studentEmail">邮箱：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="studentEmail" name="studentEmail"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">就业状态：</label>
+                                    <div class="col-lg-7">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="studentEmployment" value="1">待就业
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="studentEmployment" value="2">已就业
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="studentResume">个人简历：</label>
+                                    <div class="col-lg-5">
+                                        <textarea rows="5" class="form-control" id="studentResume"
+                                                  name="studentResume"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-9 col-lg-offset-3">
+                                        <button type="submit" class="btn btn-primary" name="signup" value="注 册">注 册
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 老师注册表单 -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><a id="a3" data-toggle="collapse" data-parent="#steps"
+                                                   href="#stepThree">成为老师用户</a></h4>
+                    </div>
+                    <div id="stepThree" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <form id="teaForm" method="post" class="form-horizontal"
+                                  th:action="@{/teacher/register}">
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="teacherAccount">用户名：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="teacherAccount"
+                                               name="teacherAccount"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="teacherPassword">密码：</label>
+                                    <div class="col-lg-5">
+                                        <input type="password" class="form-control" id="teacherPassword"
+                                               name="teacherPassword"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="teacherNo">老师编号：</label>
+                                    <div class="col-lg-5">
+                                        <select class="form-control" name="teacherNo" id="teacherNo">
+                                            <option selected="selected" disabled>--请选择--</option>
+                                            <option value="Wlian">物联班老师</option>
+                                            <option value="Xguan">信管班老师</option>
+                                            <option value="Gzaojia">工程造价班老师</option>
+                                            <option value="Wli">物理班老师</option>
+                                            <option value="Smei">数媒班老师</option>
+                                            <option value="Rqi">燃气班老师</option>
+                                            <option value="Jhuan">建环班老师</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="teacherName">姓名：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="teacherName"
+                                               name="teacherName"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="teacherPhone">电话：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="teacherPhone"
+                                               name="teacherPhone"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-9 col-lg-offset-3">
+                                        <button type="submit" class="btn btn-primary" name="signup" value="注 册">注
+                                            册
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 企业注册表单 -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><a id="a2" data-toggle="collapse" data-parent="#steps"
+                                                   href="#stepTwo">成为企业用户</a></h4>
+                    </div>
+                    <div id="stepTwo" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <form id="comForm" method="post" class="form-horizontal"
+                                  th:action="@{/company/register}">
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="companyAccount">用户名：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="companyAccount"
+                                               name="companyAccount"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="companyPassword">密码：</label>
+                                    <div class="col-lg-5">
+                                        <input type="password" class="form-control" id="companyPassword"
+                                               name="companyPassword"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="companyNo">单位号：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="companyNo" name="companyNo"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="companyName">企业名称：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="companyName"
+                                               name="companyName"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="companyContact">联系人：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="companyContact"
+                                               name="companyContact"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="companyPhone">电话：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="companyPhone"
+                                               name="companyPhone"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="companyEmail">企业邮箱：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="companyEmail"
+                                               name="companyEmail"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="companyCode">机构代码：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="companyCode"
+                                               name="companyCode"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="companyAddress">企业地址：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="companyAddress"
+                                               name="companyAddress"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="companyDescribe">企业简介：</label>
+                                    <div class="col-lg-5">
+                                            <textarea rows="5" class="form-control" id="companyDescribe"
+                                                      name="companyDescribe"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-9 col-lg-offset-3">
+                                        <button type="submit" class="btn btn-primary" name="signup" value="注 册">注
+                                            册
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 学院管理员注册表单 -->
+<!--                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><a id="a4" data-toggle="collapse" data-parent="#steps"
+                                                   href="#stepFour">成为学院管理员用户</a></h4>
+                    </div>
+                    <div id="stepFour" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <form id="admForm" method="post" class="form-horizontal"
+                                  th:action="@{/admin/register}">
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="adminAccount">用户名：</label>
+                                    <div class="col-lg-5">
+                                        <input type="text" class="form-control" id="adminAccount"
+                                               name="adminAccount"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="adminPassword">密码：</label>
+                                    <div class="col-lg-5">
+                                        <input type="password" class="form-control" id="adminPassword"
+                                               name="adminPassword"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-9 col-lg-offset-3">
+                                        <button type="submit" class="btn btn-primary" name="signup" value="注 册">
+                                            注 册
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+            <div class="text-center">
+                <small style="padding-bottom: 30px">已有账号?</small><a th:href="@{/toLogin}">&nbsp;点击登录</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    // 初始化折叠面板，显示学生注册，隐藏公司注册，点击切换
+    $(function () {
+        //这些函数只有bootstrap4.0以上版本才有，所以bootstr.js版本要4.0以上才生效
+        $("#stepOne").collapse('hide');
+        $("#stepTwo").collapse('hide');
+        $("#stepThree").collapse('hide');
+        $("#stepFour").collapse('hide');
+        $("#stepOne").collapse().toggle();
+        $("#stepTwo").collapse().toggle();
+        $("#stepThree").collapse().toggle();
+        $("#stepFour").collapse().toggle();
+
+        $("#a1").click(function () {
+            $("#stepOne").collapse('show');
+            $("#stepTwo").collapse('hide');
+            $("#stepThree").collapse('hide');
+            $("#stepFour").collapse('hide');
+        });
+        $("#a2").click(function () {
+            $("#stepTwo").collapse('show');
+            $("#stepOne").collapse('hide');
+            $("#stepThree").collapse('hide');
+            $("#stepFour").collapse('hide');
+        });
+        $("#a3").click(function () {
+            $("#stepTwo").collapse('hide');
+            $("#stepOne").collapse('hide');
+            $("#stepThree").collapse('show');
+            $("#stepFour").collapse('hide');
+        });
+        $("#a4").click(function () {
+            $("#stepTwo").collapse('hide');
+            $("#stepOne").collapse('hide');
+            $("#stepThree").collapse('hide');
+            $("#stepFour").collapse('show');
+        });
+
+        //学生注册表单验证
+        $('#stuForm').bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                studentAccount: {
+                    threshold: 5, //有5字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，5字符以上才开始）
+                    validators: {
+                        notEmpty: {
+                            message: '注册用户名不能为空'
+                        },
+                        stringLength: {
+                            min: 5,
+                            max: 12,
+                            message: '用户名长度必须在5到12位之间'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_]+$/,
+                            message: '密码只能包含大写、小写、数字和下划线'
+                        },
+                        remote: {
+                            url: '/student/check',
+                            message: "用户名已被使用，请重新输入",
+                            delay: 1300,
+                            type: 'POST',
+                        }
+                    }
+                },
+
+                studentPassword: {
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空'
+                        },
+                        stringLength: {
+                            min: 6,
+                            max: 12,
+                            message: '密码长度必须在6到12位之间'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_]+$/,
+                            message: '密码只能包含大写、小写、数字和下划线'
+                        }
+                    }
+                }
+            }
+        });
+
+        //老师注册表单验证
+        $('#teaForm').bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                teacherAccount: {
+                    threshold: 5, //有5字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，5字符以上才开始）
+                    validators: {
+                        notEmpty: {
+                            message: '注册用户名不能为空'
+                        },
+                        stringLength: {
+                            min: 5,
+                            max: 12,
+                            message: '用户名长度必须在5到12位之间'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_]+$/,
+                            message: '密码只能包含大写、小写、数字和下划线'
+                        },
+                        remote: {
+                            url: '/teacher/check',
+                            message: "用户名已被使用，请重新输入",
+                            delay: 1300,
+                            type: 'POST',
+                        }
+                    }
+                },
+
+                teacherPassword: {
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空'
+                        },
+                        stringLength: {
+                            min: 6,
+                            max: 12,
+                            message: '密码长度必须在6到12位之间'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_]+$/,
+                            message: '密码只能包含大写、小写、数字和下划线'
+                        }
+                    }
+                }
+            }
+        });
+
+        //公司注册表单验证
+        $('#comForm').bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                companyAccount: {
+                    threshold: 5, //有5字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，5字符以上才开始）
+                    validators: {
+                        notEmpty: {
+                            message: '注册用户名不能为空'
+                        },
+                        stringLength: {
+                            min: 5,
+                            max: 12,
+                            message: '用户名长度必须在5到12位之间'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_]+$/,
+                            message: '密码只能包含大写、小写、数字和下划线'
+                        },
+                        remote: {
+                            url: "/company/check",
+                            message: "用户名已被使用，请重新输入",
+                            delay: 1300,
+                            type: 'POST',
+                        }
+                    }
+                },
+
+                companyPassword: {
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空'
+                        },
+                        stringLength: {
+                            min: 6,
+                            max: 12,
+                            message: '密码长度必须在6到12位之间'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_]+$/,
+                            message: '密码只能包含大写、小写、数字和下划线'
+                        }
+                    }
+                },
+                companyName: {
+                    validators: {
+                        notEmpty: {
+                            message: '公司名称不能为空'
+                        },
+                    }
+                },
+                companyEmail: {
+                    validators: {
+                        emailAddress: {
+                            message: '请输入正确的邮箱地址'
+                        },
+                    }
+                }
+            }
+        });
+
+        //学院管理员注册表单验证
+        $('#admForm').bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                adminAccount: {
+                    threshold: 5, //有5字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，5字符以上才开始）
+                    validators: {
+                        notEmpty: {
+                            message: '注册用户名不能为空'
+                        },
+                        stringLength: {
+                            min: 5,
+                            max: 12,
+                            message: '用户名长度必须在5到12位之间'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_]+$/,
+                            message: '密码只能包含大写、小写、数字和下划线'
+                        },
+/*                        remote: {
+                            url: '/admin/check',
+                            message: "用户名已被使用，请重新输入",
+                            delay: 1300,
+                            type: 'POST',
+                        }*/
+                    }
+                },
+
+                adminPassword: {
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空'
+                        },
+                        stringLength: {
+                            min: 6,
+                            max: 12,
+                            message: '密码长度必须在6到12位之间'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_]+$/,
+                            message: '密码只能包含大写、小写、数字和下划线'
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

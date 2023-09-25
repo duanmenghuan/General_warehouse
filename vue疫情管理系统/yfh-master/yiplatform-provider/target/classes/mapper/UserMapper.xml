@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.yiplatform.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="cn.yiplatform.entity.User">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+            <result property="account" column="account" jdbcType="VARCHAR"/>
+<!--            <result property="password" column="password" jdbcType="VARCHAR"/>-->
+            <result property="mobile" column="mobile" jdbcType="VARCHAR"/>
+<!--            <result property="department" column="department" jdbcType="BIGINT"/>-->
+            <result property="fillStatus" column="fill_status" jdbcType="INTEGER"/>
+<!--            <result property="role" column="role" jdbcType="BIGINT"/>-->
+            <result property="address" column="address" jdbcType="VARCHAR"/>
+<!--            <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>-->
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="MenuResult" type="cn.yiplatform.entity.Menu">
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="path" column="path" jdbcType="VARCHAR"/>
+        <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="parentId" column="parent_id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        user_name,account,mobile,department,
+        fill_status,address,
+        is_deleted
+    </sql>
+
+    <select id="selectUserByAccountAndPassword" resultMap="BaseResultMap">
+        select user.id, user_name,account,mobile,password,
+               department.dep_name,
+               fill_status,address
+        from user
+        JOIN department
+        ON user.department = department.id
+        join role
+        on user.role = role.id
+        where account = #{account,jdbcType=VARCHAR}
+        AND password = #{password,jdbcType=VARCHAR}
+        AND is_deleted = 0
+    </select>
+    <update id="updatePasswordByAccount">
+        update user
+        set password = #{password,jdbcType=VARCHAR}
+        where account = #{account,jdbcType=VARCHAR} AND is_deleted = 0
+    </update>
+    <select id="selectPasswordByAccount" resultMap="BaseResultMap">
+        select password
+        from user
+        where account = #{account,jdbcType=VARCHAR}
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectUserMenusByUid" resultMap="MenuResult">
+        SELECT menu.id, name, path, icon, parent_id
+        from menu
+        LEFT JOIN role_menu_relation
+        on menu.id = role_menu_relation.menu_id
+        LEFT JOIN user_role_relation
+        on user_role_relation.role_id = role_menu_relation.role_id
+        WHERE user_role_relation.user_id = #{uid}
+    </select>
+
+</mapper>

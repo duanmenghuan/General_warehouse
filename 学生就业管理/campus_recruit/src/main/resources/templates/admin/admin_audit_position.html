@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>审核职位</title>
+
+    <link th:href="@{/sources/css/bootstrap.css}" rel="stylesheet">
+    <link th:href="@{/sources/css/materialdesignicons.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/sources/css/bootstrapValidator.css}"/>
+    <link th:href="@{/sources/css/style.min.css}" rel="stylesheet">
+
+    <script th:src="@{/sources/js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/bootstrapValidator.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/perfect-scrollbar.min.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/main.min.js}"></script>
+</head>
+
+<body>
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <!--左侧导航-->
+        <div th:insert="/admin/admin_index::admin_side"></div>
+        <!--End 左侧导航-->
+
+        <!--头部信息-->
+        <div th:insert="/admin/admin_index::admin_header"></div>
+        <!--End 头部信息-->
+
+        <!--页面主要内容-->
+        <main class="lyear-layout-content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div>
+                                    <form id="updatePosition" name="publishPosition" method="post"
+                                          th:action="@{/admin/audit/position}" class="form-horizontal">
+                                        <input type="hidden" name="positionId" th:value="${position.positionId}">
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="positionName">职位名称</label>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control" name="positionName"
+                                                       id="positionName" th:value="${position.positionName}" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="positionStatus">审核结果</label>
+                                            <div class="col-md-6">
+                                                <select class="form-control" name="positionStatus" id="positionStatus">
+                                                    <option selected="selected" disabled>--请选择--</option>
+                                                    <option value="2">通过</option>
+                                                    <option value="3">不通过</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="positionRemark">审核备注</label>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control" name="positionRemark"
+                                                       id="positionRemark">
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary col-md-offset-4" id="updateBtn"
+                                                onclick="{if(confirm('您确定要提交改审核结果吗?')){
+                                            this.document.publishPosition.submit();
+                                            return true;}return false;
+                                        }">提交
+                                        </button>
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    </main>
+    <!--End 页面主要内容-->
+</div>
+</div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#updatePosition").bootstrapValidator({
+            message: 'This value is not valid',
+            live: 'enable',//验证时机，enabled是内容有变化就验证（默认），disabled和submitted是提交再验证
+            excluded: [':disabled', ':hidden'],//排除无需验证的控件，比如被禁用的或者被隐藏的
+            //提供输入验证图标提示
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                positionStatus: {
+                    validators: {
+                        notEmpty: {
+                            message: '审核结果不能为空'
+                        },
+                    }
+                }
+            },
+        });
+    });
+</script>
+</body>
+</html>

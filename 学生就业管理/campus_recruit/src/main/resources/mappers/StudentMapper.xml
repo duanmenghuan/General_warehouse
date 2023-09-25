@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lewis.recruit.mappers.StudentMapper">
+    <resultMap id="stuMap" type="com.lewis.recruit.pojo.Student">
+        <id property="studentId" column="student_id"/>
+        <result property="studentAccount" column="student_account"/>
+        <result property="studentPassword" column="student_password"/>
+        <result property="studentSalt" column="student_salt"/>
+        <result property="studentNo" column="student_no"/>
+        <result property="studentClassg" column="student_classg"/>
+        <result property="studentPhone" column="student_phone"/>
+        <result property="studentResume" column="student_resume"/>
+        <result property="studentEmployment" column="student_employment"/>
+        <result property="employment" column="employment"/>
+        <result property="studentName" column="student_name"/>
+        <result property="studentMajor" column="student_major"/>
+        <result property="studentGrade" column="student_grade"/>
+        <result property="studentEmail" column="student_email"/>
+        <association property="deliver" javaType="com.lewis.recruit.pojo.Deliver">
+            <result property="deliverId" column="deliver_id"/>
+            <result property="positionId" column="position_id"/>
+            <result property="deliverState" column="deliver_state"/>
+        </association>
+    </resultMap>
+
+    <select id="getStudentByStuAccount" resultMap="stuMap">
+        select * from student
+        where student_account = #{studentAccount}
+    </select>
+
+    <insert id="saveStudent" useGeneratedKeys="true" keyProperty="studentId" parameterType="com.lewis.recruit.pojo.Student">
+        insert into student(student_account,student_password,student_salt,student_no,student_classg,student_phone,student_resume,student_employment,student_name,student_major,student_grade,student_email) values
+        (#{studentAccount},#{studentPassword},#{studentSalt},#{studentNo},#{studentClassg},#{studentPhone},#{studentResume},#{studentEmployment},#{studentName},#{studentMajor},#{studentGrade},#{studentEmail})
+    </insert>
+
+    <update id="updateStuPwdByStuId" parameterType="Student">
+        update student set student_password=#{studentPassword},student_salt=#{studentSalt} where student_id = #{studentId}
+    </update>
+
+    <update id="updateStudent" parameterType="Student">
+        update student
+        <set>
+            <if test="studentNo != null and studentNo != ''">
+                student_no = #{studentNo},
+            </if>
+            <if test="studentClassg != null and studentClassg != ''">
+                student_classg = #{studentClassg},
+            </if>
+            <if test="studentPhone != null and studentPhone != ''">
+                student_phone = #{studentPhone},
+            </if>
+            <if test="studentResume != null and studentResume != ''">
+                student_resume = #{studentResume},
+            </if>
+            <if test="studentEmployment != null and studentEmployment != ''">
+                student_employment = #{studentEmployment},
+            </if>
+            <if test="employment != null and employment != ''">
+                employment = #{employment},
+            </if>
+            <if test="studentName != null and studentName != ''">
+                student_name = #{studentName},
+            </if>
+            <if test="studentMajor != null and studentMajor != ''">
+                student_major = #{studentMajor},
+            </if>
+            <if test="studentGrade != null and studentGrade != ''">
+                student_grade = #{studentGrade},
+            </if>
+            <if test="studentEmail != null and studentEmail != ''">
+                student_email = #{studentEmail},
+            </if>
+        </set>
+        <where>
+            student_Id = #{studentId}
+        </where>
+    </update>
+
+    <select id="getStudentList" resultType="Student">
+        select * from student
+    </select>
+
+    <delete id="deleteStudentByStuId">
+        delete from student where student_id = #{studentId}
+    </delete>
+
+    <select id="getStudentByPositionId" resultMap="stuMap">
+        SELECT
+            s.*, d.deliver_id,
+        d.position_id,
+        d.deliver_state
+        FROM
+            deliver d,
+            student s
+        WHERE
+            d.student_id = s.student_id
+        AND d.position_id = #{positionId}
+    </select>
+</mapper>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lewis.recruit.mappers.CompanyMapper">
+    <resultMap id="comMap" type="com.lewis.recruit.pojo.Company">
+        <id property="companyId" column="company_id"/>
+        <result property="companyAccount" column="company_account"/>
+        <result property="companyPassword" column="company_password"/>
+        <result property="companySalt" column="company_salt"/>
+        <result property="companyNo" column="company_no"/>
+        <result property="companyName" column="company_name"/>
+        <result property="companyContact" column="company_contact"/>
+        <result property="companyPhone" column="company_phone"/>
+        <result property="companyEmail" column="company_email"/>
+        <result property="companyCode" column="company_code"/>
+        <result property="companyAddress" column="company_address"/>
+        <result property="companyDescribe" column="company_describe"/>
+    </resultMap>
+
+    <select id="getCompanyByComAccount" resultMap="comMap">
+        select * from company
+        where company_account = #{companyAccount}
+    </select>
+
+    <select id="getCompanyByCompanyId" resultMap="comMap">
+        select *
+            from company c
+        where c.company_id = #{companyId}
+    </select>
+
+    <insert id="saveCompany" parameterType="Company" useGeneratedKeys="true" keyProperty="companyId">
+        insert into company
+        <trim  prefix="(" suffix=")" suffixOverrides="," >
+            <if test="companyAccount != null and companyAccount != '' ">
+                company_account,
+            </if>
+            <if test="companyPassword != null and companyPassword != '' ">
+                company_password,
+            </if>
+            <if test="companySalt != null and companySalt != '' ">
+                company_salt,
+            </if>
+            <if test="companyNo != null and companyNo != '' ">
+                company_no,
+            </if>
+            <if test="companyName != null and companyName != '' ">
+                company_name,
+            </if>
+            <if test="companyContact != null and companyContact != '' ">
+                company_contact,
+            </if>
+            <if test="companyPhone != null and companyPhone != '' ">
+                company_phone,
+            </if>
+            <if test="companyEmail != null and companyEmail != '' ">
+                company_email,
+            </if>
+            <if test="companyCode != null and companyCode != '' ">
+                company_code,
+            </if>
+            <if test="companyAddress != null and companyAddress != '' ">
+                company_address,
+            </if>
+            <if test="companyDescribe != null and companyDescribe != '' ">
+                company_describe,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="companyAccount != null and companyAccount != '' ">
+                #{companyAccount},
+            </if>
+            <if test="companyPassword != null and companyPassword != '' ">
+                #{companyPassword},
+            </if>
+            <if test="companySalt != null and companySalt != '' ">
+                #{companySalt},
+            </if>
+            <if test="companyNo != null and companyNo != '' ">
+                #{companyNo},
+            </if>
+            <if test="companyName != null and companyName != '' ">
+                #{companyName},
+            </if>
+            <if test="companyContact != null and companyContact != '' ">
+                #{companyContact},
+            </if>
+            <if test="companyPhone != null and companyPhone != '' ">
+                #{companyPhone},
+            </if>
+            <if test="companyEmail != null and companyEmail != '' ">
+                #{companyEmail},
+            </if>
+            <if test="companyCode != null and companyCode != '' ">
+                #{companyCode},
+            </if>
+            <if test="companyAddress != null and companyAddress != '' ">
+                #{companyAddress},
+            </if>
+            <if test="companyDescribe != null and companyDescribe != '' ">
+                #{companyDescribe},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateCompany" parameterType="Company">
+        update company
+        <set>
+            <if test="companyNo != null and companyNo != '' ">
+                company_no = #{companyNo},
+            </if>
+            <if test="companyName != null and companyName != '' ">
+                company_name = #{companyName},
+            </if>
+            <if test="companyContact != null and companyContact != '' ">
+                company_contact = #{companyContact},
+            </if>
+            <if test="companyPhone != null and companyPhone != '' ">
+                company_phone = #{companyPhone},
+            </if>
+            <if test="companyEmail != null and companyEmail != '' ">
+                company_email = #{companyEmail},
+            </if>
+            <if test="companyCode != null and companyCode != '' ">
+                company_code = #{companyCode},
+            </if>
+            <if test="companyAddress != null and companyAddress != '' ">
+                company_address = #{companyAddress},
+            </if>
+            <if test="companyDescribe != null and companyDescribe != '' ">
+                company_describe = #{companyDescribe},
+            </if>
+        </set>
+        where company_id = #{companyId}
+    </update>
+
+<!--    修改密码-->
+    <update id="updateCompanyPwd">
+        update company
+        <set>
+            company_password = #{newPassword},
+            company_salt = #{salt}
+        </set>
+         where company_id = #{companyId}
+    </update>
+
+    <select id="getCompanyList" resultType="company">
+        select * from company
+    </select>
+
+    <delete id="deleteCompany">
+        delete from company where company_id = #{companyId}
+    </delete>
+</mapper>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>职位信息</title>
+    <link rel="stylesheet" th:href="@{/sources/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/sources/css/index.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/job-content.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/job_details.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/component.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/normalize.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/font-awesome-4.7.0/css/font-awesome.css}"/>
+    <link th:href="@{/sources/css/bootstrap-table.min.css}" rel="stylesheet"/>
+
+    <script th:src="@{/sources/js/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/sources/js/bootstrap-table.min.js}"></script>
+    <script th:src="@{/sources/js/bootstrap-table-zh-CN.min.js}"></script>
+    <script th:src="@{/sources/js/bootstrap.js}"></script>
+    <script th:src="@{/sources/js/modernizr.custom.js}"></script>
+</head>
+<body>
+<div class="wrap">
+    <!--    抽签公共片段  导航栏-->
+    <div th:insert="~{/student/student_index.html::student_navigation}"></div>
+
+    <div>
+        <div class="job-header-content">
+            <div class="job-header">
+                <div class="job-name" style="padding-top: 30px">
+                    [[${company.companyName}]]
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <h3><b><span class="fa fa-th-list"></span>&nbsp; &nbsp; 该公司所有职位</b></h3>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover" id="mytable">
+                    <tbody>
+                        <tr th:each="position,positionStat:${positions}">
+                            <td>[[${positionStat.count}]]</td>
+                            <td><a th:href="@{'/student/position/' + ${position.positionId}}">[[${position.positionName}]]</a></td>
+                            <td>[[${position.positionQuota}]]人</td>
+                            <td> [[${position.positionMinSalary}]]元-[[${position.positionMaxSalary}]]元</td>
+                            <td>[[${position.positionCity}]]</td>
+                            <td>[[${#dates.format(position.positionRelease,'yyyy-MM-dd HH:mm')}]]</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+</div>
+<script>
+    $(function () {
+        $("#mytable").bootstrapTable({
+            striped : true, //是否显示行间隔色
+            pageNumber : 1, //初始化加载第一页
+            pagination : true,//是否分页
+            sidePagination : 'client',//server:服务器端分页|client：前端分页
+            pageSize : 5,//单页记录数
+            search: true,
+            pageList : [ 5, 10],//可选择单页记录数
+            showRefresh : true,//刷新按钮
+            columns : [ {
+                field: '',
+                title: '序号',
+                sortable: true,
+            }, {
+                title : '职位名称',
+                field : 'positionName',
+                sortable : true
+            }, {
+                title : '招聘人数',
+                field : 'positionQuota',
+                sortable : true
+            },{
+                title : '薪酬',
+                field : 'positionSalary',
+                sortable : true
+            },{
+                title : '工作城市',
+                field : 'positionCity',
+                sortable : true
+            },{
+                title : '发布时间',
+                field : 'positionRelease',
+                sortable : true
+            }]
+        })
+    })
+</script>
+</body>
+</html>

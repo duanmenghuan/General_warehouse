@@ -1,0 +1,13 @@
+server:
+  servlet:
+   session:
+    tracking-modes: COOKIE
+
+
+spring:
+  web:
+   resources:
+    static-locations:
+     classpath:/templates/, classpath:/static/
+  profiles:
+   active: dev

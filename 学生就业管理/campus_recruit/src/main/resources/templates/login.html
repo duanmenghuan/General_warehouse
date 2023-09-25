@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>登录页面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" th:href="@{/sources/css/font-awesome-4.7.0/css/font-awesome.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/util.css}"/>
+    <link th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
+
+    <script th:src="@{/sources/js/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/sources/js/main.js}"></script>
+</head>
+
+<body>
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <div class="login100-form-title" style="background-image: url(/sources/images/project/login_bg.jpg);">
+                <span class="login100-form-title-1">高校学生就业管理系统</span>
+            </div>
+
+            <form class="login100-form validate-form" th:action="@{/login}" method="post">
+                <div style="padding-left: 120px">
+                    <p id="tip" style="color: red" th:text="${msg}" th:if="${msg} != '您已修改密码，请重新登录！' or ${msg} != '注册成功，请登录！'"></p>
+                </div>
+
+                <div class="wrap-input100 validate-input m-b-26">
+                    <span class="label-input100"><i class="fa fa-user" aria-hidden="true"></i></span>
+                    <input class="input100 form-control" id="username" type="text" name="username" placeholder="请输入用户名" required>
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="wrap-input100 validate-input m-b-18">
+                    <span class="label-input100"><i class="fa fa-lock" aria-hidden="true"></i></span>
+                    <input class="input100 form-control" id="password" type="password" name="password" placeholder="请输入密码" required>
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="row">
+                    <div class="radio-inline">
+                        <label class="radio">
+                            <input type="radio" checked name="loginType" value="student">学生
+                        </label>
+                        <label class="radio" style="padding-left: 10px">
+                            <input type="radio" name="loginType" value="teacher">老师
+                        </label>
+                        <label class="radio" style="padding-left: 10px">
+                            <input type="radio" name="loginType" value="company">企业
+                        </label>
+                        <label class="radio" style="padding-left: 10px">
+                            <input type="radio" name="loginType" value="admin">管理员
+                        </label>
+                    </div>
+                    <div class="contact100-form-checkbox" style="padding-left: 20px">
+                        <input class="input-checkbox100" id="rememberMe" type="checkbox" name="rememberMe">
+                        <label class="label-checkbox100" for="rememberMe">记住我</label>
+                    </div>
+                </div>
+
+                <div class="container-login100-form-btn" style="padding-left: 90px;padding-top: 20px">
+                    <button class="login100-form-btn" type="submit">登 录</button>
+                </div>
+
+                <div style="padding-left: 210px;padding-top: 10px">
+                    <a th:href="@{/toRegister}">
+                        还没有账号？立即注册
+                        <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        //如果用户修改密码后跳转的登录页，则弹框提示
+        var msg = "[[${msg}]]";
+        if (msg == "您已修改密码，请重新登录！"){
+            alert(msg);
+        }
+        if (msg == "注册成功，请登录！"){
+            alert(msg);
+        }
+    });
+</script>
+</body>
+
+</html>

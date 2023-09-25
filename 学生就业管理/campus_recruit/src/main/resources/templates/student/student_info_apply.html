@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<title>我的申请</title>
+
+
+<link rel="stylesheet" th:href="@{/sources/css/base.css}"/>
+<link rel="stylesheet" th:href="@{/sources/css/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/sources/css/component.css}"/>
+<link rel="stylesheet" th:href="@{/sources/css/normalize.css}"/>
+<link rel="stylesheet" th:href="@{/sources/css/font-awesome-4.7.0/css/font-awesome.css}"/>
+<link th:href="@{/sources/css/bootstrap-table.min.css}" rel="stylesheet"/>
+
+<script th:src="@{/sources/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/sources/js/bootstrap-table.min.js}"></script>
+<script th:src="@{/sources/js/bootstrap-table-zh-CN.min.js}"></script>
+<script th:src="@{/sources/js/bootstrap.js}"></script>
+<script th:src="@{/sources/js/modernizr.custom.js}"></script>
+
+</head>
+<body>
+<div class="wrap">
+    <!--    抽签公共片段  导航栏-->
+    <div th:insert="~{/student/student_index.html::student_navigation}"></div>
+
+    <div class="container">
+        <div class="row">
+            <section>
+                <div class="col-lg-8 col-lg-offset-2">
+                    <div class="page-header">
+                        <h2>个人信息设置</h2>
+                    </div>
+
+                    <ul class="nav nav-tabs">
+                        <li><a th:href="@{/student/toStuInfoPwd}">修改密码</a></li>
+                        <li><a th:href="@{/student/toStuInfoResume}">个人资料</a></li>
+                        <li class="active"><a th:href="@{/student/toStuInfoApply}">我的申请</a></li>
+                        <li><a th:href="@{/student/toConsultation}">我的咨询</a></li>
+                    </ul>
+                    <div th:if="${deliverList.isEmpty()}">
+                        <h3>您还没有投递记录！</h3>
+                    </div>
+                    <div th:if="!${deliverList.isEmpty()}">
+                        <h3><b><span class="fa fa-th-list"></span>&nbsp; &nbsp; 您的投递记录</b></h3>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover" id="detable">
+                                <tbody>
+                                <tr th:each="deliver,deliverStat:${deliverList}">
+                                    <td>[[${deliverStat.count}]]</td>
+                                    <td><a th:href="@{'/student/position/' + ${deliver.positionId}}">[[${deliver.position.positionName}]]</a></td>
+                                    <td>[[${deliver.position.company.companyName}]]</td>
+                                    <td> [[${deliver.deliverState}==1 ? '待审核' : (${deliver.deliverState}==2 ? '已通过': '未通过')]]</td>
+                                    <td> [[${deliver.deliverDate}]]</td>
+                                    <td>
+                                        <div th:if="${student.getStudentEmployment() == 1}" class="btn-group">
+                                            <form th:if="${deliver.deliverState == 2}" th:action="@{'/student/audit/' + ${deliver.deliverId}}" method="post">
+                                                <button type="submit" class="btn btn-xs btn-default"><i class="mdi mdi-pencil"></i>选择</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#detable").bootstrapTable({
+            striped : true, //是否显示行间隔色
+            pageNumber : 1, //初始化加载第一页
+            pagination : true,//是否分页
+            sidePagination : 'client',//server:服务器端分页|client：前端分页
+            pageSize : 5,//单页记录数
+            search: true,
+            pageList : [ 5, 10],//可选择单页记录数
+            // showRefresh : true,//刷新按钮
+            columns : [ {
+                field: '',
+                title: '序号',
+                sortable: true,
+                align: "center",
+                width: 40,
+                formatter: function (value, row, index) {
+                    return index + 1;
+                }
+            }, {
+                title : '职位名称',
+                field : 'positionName',
+                sortable : true
+            }, {
+                title : '公司名称',
+                field : 'companyName',
+                sortable : true
+            },{
+                title : '简历状态',
+                field : 'deliverState',
+                sortable : true
+            },{
+                title : '投递时间',
+                field : 'deliverDate',
+                sortable : true
+            },{
+                title : '操作',
+                field : '1',
+                sortable : true
+            }]
+        })
+    })
+</script>
+</body>
+</html>

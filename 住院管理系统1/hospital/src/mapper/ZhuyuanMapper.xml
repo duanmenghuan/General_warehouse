@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.dao.ZhuyuanMapper">
+
+    <resultMap id="BaseResultMap" type="com.demo.vo.Zhuyuan" >
+            <result column="id" property="id" />
+            <result column="zhuyuan_name" property="zhuyuanName" />
+            <result column="zhuyuan_hao" property="zhuyuanHao" />
+            <result column="zhuyuan_sex" property="zhuyuanSex" />
+            <result column="zhuyuan_keshi" property="zhuyuanKeshi" />
+            <result column="zhuyuan_bingfanghao" property="zhuyuanBingfanghao" />
+            <result column="zhuyuan_time" property="zhuyuanTime" />
+            <result column="zhuyuan_yishi" property="zhuyuanYishi" />
+            <result column="zhuyuan_text" property="zhuyuanText" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        `id`,`zhuyuan_name`,`zhuyuan_hao`,`zhuyuan_sex`,`zhuyuan_keshi`,`zhuyuan_bingfanghao`,`zhuyuan_time`,`zhuyuan_yishi`,`zhuyuan_text`
+    </sql>
+
+    <!--新增-->
+    <insert id="doCreate" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.demo.vo.Zhuyuan">
+        INSERT INTO `t_zhuyuan`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                    <if test ='id != null'>`id`,</if>
+                    <if test ='zhuyuanName != null'>`zhuyuan_name`,</if>
+                    <if test ='zhuyuanHao != null'>`zhuyuan_hao`,</if>
+                    <if test ='zhuyuanSex != null'>`zhuyuan_sex`,</if>
+                    <if test ='zhuyuanKeshi != null'>`zhuyuan_keshi`,</if>
+                    <if test ='zhuyuanBingfanghao != null'>`zhuyuan_bingfanghao`,</if>
+                    <if test ='zhuyuanTime != null'>`zhuyuan_time`,</if>
+                    <if test ='zhuyuanYishi != null'>`zhuyuan_yishi`,</if>
+                    <if test ='zhuyuanText != null'>`zhuyuan_text`</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                    <if test ='id != null'>#{id},</if>
+                    <if test ='zhuyuanName != null'>#{zhuyuanName},</if>
+                    <if test ='zhuyuanHao != null'>#{zhuyuanHao},</if>
+                    <if test ='zhuyuanSex != null'>#{zhuyuanSex},</if>
+                    <if test ='zhuyuanKeshi != null'>#{zhuyuanKeshi},</if>
+                    <if test ='zhuyuanBingfanghao != null'>#{zhuyuanBingfanghao},</if>
+                    <if test ='zhuyuanTime != null'>#{zhuyuanTime},</if>
+                    <if test ='zhuyuanYishi != null'>#{zhuyuanYishi},</if>
+                    <if test ='zhuyuanText != null'>#{zhuyuanText}</if>
+        </trim>
+    </insert>
+
+    <!--批量删除-->
+    <delete id="doRemoveBatch" parameterType="java.util.Collection">
+        DELETE FROM `t_zhuyuan` WHERE `id` IN
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--修改-->
+    <update id="doUpdate" parameterType="com.demo.vo.Zhuyuan">
+        UPDATE `t_zhuyuan`
+        <set>
+                <if test ='id != null'>`id` = #{id},</if>
+                <if test ='zhuyuanName != null'>`zhuyuan_name` = #{zhuyuanName},</if>
+                <if test ='zhuyuanHao != null'>`zhuyuan_hao` = #{zhuyuanHao},</if>
+                <if test ='zhuyuanSex != null'>`zhuyuan_sex` = #{zhuyuanSex},</if>
+                <if test ='zhuyuanKeshi != null'>`zhuyuan_keshi` = #{zhuyuanKeshi},</if>
+                <if test ='zhuyuanBingfanghao != null'>`zhuyuan_bingfanghao` = #{zhuyuanBingfanghao},</if>
+                <if test ='zhuyuanTime != null'>`zhuyuan_time` = #{zhuyuanTime},</if>
+                <if test ='zhuyuanYishi != null'>`zhuyuan_yishi` = #{zhuyuanYishi},</if>
+                <if test ='zhuyuanText != null'>`zhuyuan_text` = #{zhuyuanText}</if>
+        </set>
+        WHERE `id` = #{id}
+    </update>
+
+    <!--获取-->
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> FROM `t_zhuyuan` WHERE `id` = #{id}
+    </select>
+
+    <!--列表-->
+    <select id="findAllSplit" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> FROM `t_zhuyuan`
+        <where>
+            <if test="searchColumn != null and searchColumn != '' and keyword != null and keyword != ''">
+                ${searchColumn} LIKE CONCAT('%',#{keyword},'%')  AND
+            </if>
+            1=1
+        </where>
+        ORDER BY id ASC
+        <if test="startIndex != null and pageSize != null">
+            LIMIT #{startIndex},#{pageSize};
+        </if>
+    </select>
+    <!--数量-->
+    <select id="getAllCount" parameterType="java.util.Map" resultType="Integer">
+        SELECT COUNT(*) FROM `t_zhuyuan`
+        <where>
+            <if test="searchColumn != null and searchColumn != '' and keyword != null and keyword != ''">
+                ${searchColumn} LIKE CONCAT('%',#{keyword},'%')  AND
+            </if>
+            1=1
+        </where>
+    </select>
+</mapper>

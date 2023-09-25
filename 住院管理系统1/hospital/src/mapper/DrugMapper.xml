@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.dao.DrugMapper">
+    <resultMap id="BaseResultMap" type="com.demo.vo.Drug" >
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="supplier" property="supplier" />
+        <result column="initial_time" property="initialtime" />
+        <result column="expiration_date" property="expirationdate" />
+        <result column="pesticide_effect" property="pesticideeffect" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        `id`,`name`,`supplier`,`initial_time`,`expiration_date`,`pesticide_effect`,`remark`
+    </sql>
+
+
+    <update id="doUpdate" parameterType="com.demo.vo.Drug">
+        UPDATE `t_drug`
+        <set>
+            <if test ='id != null'>`id` = #{id},</if>
+            <if test ='supplier != null'>`supplier` = #{supplier},</if>
+            <if test ='initialtime != null'>`initial_time` = #{initialtime},</if>
+            <if test ='expirationdate != null'>`expiration_date` = #{expirationdate},</if>
+            <if test ='pesticideeffect != null'>`pesticide_effect` = #{pesticideeffect},</if>
+            <if test ='remark != null'>`remark` = #{remark},</if>
+        </set>
+        WHERE `id` = #{id}
+    </update>
+
+
+
+
+    <insert id="doCreate" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.demo.vo.Drug">
+        INSERT INTO `t_drug`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='id != null'>`id`,</if>
+            <if test ='name != null'>`name`,</if>
+            <if test ='supplier != null'>`supplier`,</if>
+            <if test ='initialtime != null'>`initial_time`,</if>
+            <if test ='expirationdate != null'>`expiration_date`,</if>
+            <if test ='pesticideeffect != null'>`pesticide_effect`,</if>
+            <if test ='remark != null'>`remark`,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='id != null'>#{id},</if>
+            <if test ='name != null'>#{name},</if>
+            <if test ='supplier != null'>#{supplier},</if>
+            <if test ='initialtime != null'>#{initialtime},</if>
+            <if test ='expirationdate != null'>#{expirationdate},</if>
+            <if test ='pesticideeffect != null'>#{expirationdate},</if>
+            <if test ='remark != null'>#{remark},</if>
+        </trim>
+    </insert>
+
+
+    <delete id="doRemoveBatch" parameterType="java.util.Collection">
+        DELETE FROM `t_drug` WHERE `id` IN
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+
+
+
+
+
+
+    <!--列表-->
+    <select id="findAllSplit" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> FROM `t_drug`
+        <where>
+            <if test="searchColumn != null and searchColumn != '' and keyword != null and keyword != ''">
+                ${searchColumn} LIKE CONCAT('%',#{keyword},'%')  AND
+            </if>
+            1=1
+        </where>
+        ORDER BY id ASC
+        <if test="startIndex != null and pageSize != null">
+            LIMIT #{startIndex},#{pageSize};
+        </if>
+    </select>
+    <!--数量-->
+    <select id="getAllCount" parameterType="java.util.Map" resultType="Integer">
+        SELECT COUNT(*) FROM `t_drug`
+        <where>
+            <if test="searchColumn != null and searchColumn != '' and keyword != null and keyword != ''">
+                ${searchColumn} LIKE CONCAT('%',#{keyword},'%')  AND
+            </if>
+            1=1
+        </where>
+    </select>
+
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> FROM `t_drug` WHERE `id` = #{id}
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

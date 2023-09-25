@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>职位信息</title>
+    <link rel="stylesheet" th:href="@{/sources/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/sources/css/index.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/job-content.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/job_details.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/component.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/normalize.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/font-awesome-4.7.0/css/font-awesome.css}"/>
+
+    <script th:src="@{/sources/js/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/sources/js/bootstrap.js}"></script>
+    <script th:src="@{/sources/js/modernizr.custom.js}"></script>
+</head>
+<body>
+<div class="wrap">
+    <!--    抽签公共片段  导航栏-->
+    <div th:insert="~{/student/student_index.html::student_navigation}"></div>
+
+    <div>
+        <div class="job-header-content">
+            <div class="job-header">
+                <input type="hidden" id="positionId" th:value="${position.positionId}">
+                <input type="hidden" id="companyId" th:value="${position.company.companyId}">
+                <div class="job-name">
+                    [[${position.positionName}]]
+                </div>
+                <div class="job-request" style="padding-left: 30px">
+                    <h3>
+                        <span class="fa fa-vcard"></span> [[${position.company.companyName}]]
+                        <small><a th:href="@{'/student/position/getPositionByCompany/' + ${position.positionCompany}}">&nbsp;查看该公司所有职位<span class="fa fa-search-plus"></span></span></a></small>
+                    </h3>
+                    <p>
+                        <span>发布于[[${#dates.format(position.positionRelease,'yyyy-MM-dd HH:mm')}]]</span>
+                    </p>
+                    <p>
+                        <span>[[${position.positionCity}]]</span>
+                        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                        <span class="salary">月薪：[[${position.positionMinSalary}]]元-[[${position.positionMaxSalary}]]元</span>
+                        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                        <span>招聘人数：[[${position.positionQuota}]]人</span>
+                        <span style="color:red;">[[${position.positionFresh} == 1 ? '应届生' : '']]</span>
+                    </p>
+
+
+                    <div class="position-content-r" style="max-width: 430px;">
+<!--                        投递简历按钮-->
+                        <div class="position-deal" style="display: flex;">
+                            <button id="consultation" class="btn-lg btn-info" style="margin-right: 5px;">咨询</button>
+                            <div th:if="${deliver == null}">
+                                <form th:action="@{/student/deliverResume}">
+                                    <input type="hidden" name="studentId" th:value="${student.studentId}">
+                                    <input type="hidden" name="positionId" th:value="${position.positionId}">
+                                    <input type="hidden" name="companyId" th:value="${position.positionCompany}">
+                                    <button class="btn-lg btn-warning" type="submit" >投递简历</button>
+                                </form>
+                            </div>
+                            <div th:if="${deliver != null}">
+                                <button class="btn-lg btn-danger" disabled="disabled">已投递</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail container">
+            <div class="content_l">
+                <br class="job_detail">
+                <h3><b><span class="fa fa-th-list"></span>&nbsp; &nbsp; 职位信息</b></h3>
+                <br/>
+
+                <h4>一、岗位职责：</h4>
+                <div style="white-space: pre-line;line-height: 25px">[[${position.positionDescription}]]</div>
+                <br/><br/>
+
+                <h4>二、任职要求：</h4>
+                <div style="white-space: pre-line;line-height: 25px">[[${position.positionRequire}]]</div>
+
+                <br/><br/>
+
+                <h4>三、福利待遇：</h4>
+                <div style="white-space: pre-line;line-height: 25px">[[${position.positionWelfare} == null ? '暂无信息' : ${position.positionWelfare}]]</div>
+                <br/><br/>
+
+                <h4>四、公司地址：</h4>
+                <span class="fa fa-map-marker"></span>&nbsp; &nbsp; [[${position.company.companyAddress}]]<br/><br/>
+
+                <h4>五、公司邮箱：</h4>
+                <span class="fa fa-envelope"></span>&nbsp; &nbsp; [[${position.company.companyEmail}]]<br/><br/>
+                <hr/>
+
+                <h3><b><span class="fa fa-th-list"></span>&nbsp; &nbsp; 公司信息</b></h3>
+                <div style="white-space: pre-line;line-height: 25px" th:text="${position.company.companyDescribe} == null ? '暂无公司简介': ${position.company.companyDescribe}">
+                </div>
+
+                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel">咨询</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="content">咨询内容</label>
+                    <input type="text" name="content" class="form-control" id="content" placeholder="咨询内容">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //咨询
+    $('#consultation').click(function () {
+        $('#content').val('');
+        $('#myModal').modal();
+    });
+    //咨询提交
+    $('#btn_submit').click(function () {
+        let params = {
+            content:  $('#content').val(),
+            positionId: $('#positionId').val(),
+            companyId: $('#companyId').val(),
+        }
+        $.ajax({
+            url : '/consultation/add',
+            data : params,
+            type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
+            dataType : 'json',
+            success : function(obj) {
+            }
+        });
+    });
+</script>
+</body>
+</html>

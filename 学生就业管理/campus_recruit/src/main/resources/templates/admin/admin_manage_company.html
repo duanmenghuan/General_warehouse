@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>管理企业用户</title>
+
+    <link th:href="@{/sources/css/bootstrap.css}" rel="stylesheet">
+    <link th:href="@{/sources/css/materialdesignicons.min.css}" rel="stylesheet">
+    <link th:href="@{/sources/css/style.min.css}" rel="stylesheet">
+    <link th:href="@{/sources/css/bootstrap-table.min.css}" rel="stylesheet"/>
+
+    <script th:src="@{/sources/js/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/sources/js/bootstrap-table.min.js}"></script>
+    <script th:src="@{/sources/js/bootstrap-table-zh-CN.min.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/perfect-scrollbar.min.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/main.min.js}"></script>
+</head>
+
+<body>
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <!--左侧导航-->
+        <div th:insert="/admin/admin_index::admin_side"></div>
+        <!--End 左侧导航-->
+
+        <!--头部信息-->
+        <div th:insert="/admin/admin_index::admin_header"></div>
+        <!--End 头部信息-->
+
+        <!--页面主要内容-->
+        <main class="lyear-layout-content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card" th:if="${companyList.isEmpty()}">
+                            <div class="card-body">
+                                <h2>当前还没有企业用户进行注册，请耐心等待！</h2>
+                            </div>
+                        </div>
+                        <div class="card" th:if="!${companyList.isEmpty()}">
+                            <div class="card-toolbar clearfix">
+                                <div class="toolbar-btn-action">
+                                    <h2>所有企业用户信息：</h2>
+                                    <a class="btn btn-primary m-r-5" th:href="@{/admin/add/toCompanyAdd}"><i class="mdi mdi-plus"></i> 添加企业用户</a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped" id="companyInfo">
+                                        <thead>
+                                        <tr>
+                                            <th>编号</th>
+                                            <th>账号</th>
+                                            <th>单位号</th>
+                                            <th>名称</th>
+                                            <th>联系人</th>
+                                            <th>联系方式</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="company,companyStat:${companyList}">
+                                            <td>[[${companyStat.count}]]</td>
+                                            <td>[[${company.companyAccount}]]</td>
+                                            <td>[[${company.companyNo}]]</td>
+                                            <td>[[${company.companyName}]]</td>
+                                            <td>[[${company.companyContact}]]</td>
+                                            <td>[[${company.companyPhone}]]</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a class="btn btn-xs btn-default" th:href="@{'/admin/update/company/' + ${company.companyAccount}}" title="编辑"  data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
+                                                    <a class="btn btn-xs btn-default" th:href="@{'/admin/delete/company/' + ${company.companyId}}" title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+        <!--End 页面主要内容-->
+    </div>
+</div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        if (!('ontouchstart' in document.documentElement)) {
+            $('body').tooltip({selector: '[data-toggle="tooltip"]'});
+        };
+        $("#companyInfo").bootstrapTable({
+            striped : true, //是否显示行间隔色
+            pageNumber : 1, //初始化加载第一页
+            pagination : true,//是否分页
+            sidePagination : 'client',//server:服务器端分页|client：前端分页
+            pageSize : 5,//单页记录数
+            search: true,
+            pageList : [ 5, 10],//可选择单页记录数
+            showRefresh : true,//刷新按钮
+
+        })
+    });
+</script>
+</body>
+</html>

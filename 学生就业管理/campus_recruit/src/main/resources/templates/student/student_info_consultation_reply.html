@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<title>我的咨询</title>
+
+
+<link rel="stylesheet" th:href="@{/sources/css/base.css}"/>
+<link rel="stylesheet" th:href="@{/sources/css/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/sources/css/component.css}"/>
+<link rel="stylesheet" th:href="@{/sources/css/normalize.css}"/>
+<link rel="stylesheet" th:href="@{/sources/css/font-awesome-4.7.0/css/font-awesome.css}"/>
+<link th:href="@{/sources/css/bootstrap-table.min.css}" rel="stylesheet"/>
+
+<script th:src="@{/sources/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/sources/js/bootstrap-table.min.js}"></script>
+<script th:src="@{/sources/js/bootstrap-table-zh-CN.min.js}"></script>
+<script th:src="@{/sources/js/bootstrap.js}"></script>
+<script th:src="@{/sources/js/modernizr.custom.js}"></script>
+
+</head>
+<body>
+<div class="wrap">
+    <!--    抽签公共片段  导航栏-->
+    <div th:insert="~{/student/student_index.html::student_navigation}"></div>
+
+    <div class="container">
+        <div class="row">
+            <section>
+                <div class="col-lg-8 col-lg-offset-2">
+                    <div class="page-header">
+                        <h2>个人信息设置</h2>
+                    </div>
+
+                    <ul class="nav nav-tabs">
+                        <li><a th:href="@{/student/toStuInfoPwd}">修改密码</a></li>
+                        <li><a th:href="@{/student/toStuInfoResume}">个人资料</a></li>
+                        <li><a th:href="@{/student/toStuInfoApply}">我的申请</a></li>
+                        <li class="active"><a th:href="@{/student/toConsultation}">我的咨询</a></li>
+                    </ul>
+                    <main class="lyear-layout-content">
+
+                        <div class="container-fluid">
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4>[[${consultation.student.studentName}]]</h4>
+                                            <div style="white-space: pre-line;line-height: 25px">咨询内容：[[${consultation.content}]]</div>
+                                            <div style="white-space: pre-line;line-height: 25px">[[${consultation.consultationDate}]]</div>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                    <div th:each="child,childStat:${childList}" class="card">
+                                        <div class="card-body">
+                                            <h4>[[${child.type}==1 ? ${child.student.studentName} : (${child.type}==2 ? ${child.position.company.companyName}: ${child.teacher.teacherName})]]</h4>
+                                            <div style="white-space: pre-line;line-height: 25px">回复内容：[[${child.content}]]</div>
+                                            <div style="white-space: pre-line;line-height: 25px">[[${child.consultationDate}]]</div>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-body">
+
+                                            <div>
+                                                <form id="studentReply" name="studentReply" method="post" th:action="@{/student/replaySub}" class="form-horizontal">
+                                                    <input type="hidden" name="consultationId" th:value="${consultation.consultationId}">
+                                                    <div class="form-group">
+                                                        <label class="col-md-1 control-label" for="content">回复内容</label>
+                                                        <div class="col-md-6">
+                                                            <textarea class="form-control"   name="content" id="content" rows="3"></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <button style="margin-bottom: 20px;" type="submit" class="btn btn-primary col-md-offset-4" id="updateBtn" onclick="{if(confirm('您确定要提交该回复吗?')){
+                                            this.document.publishPosition.submit();
+                                            return true;}return false;
+                                        }">提交</button>
+                                                </form>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </main>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#studentReply").bootstrapValidator({
+            message: 'This value is not valid',
+            live: 'enable',//验证时机，enabled是内容有变化就验证（默认），disabled和submitted是提交再验证
+            excluded: [':disabled', ':hidden'],//排除无需验证的控件，比如被禁用的或者被隐藏的
+            //提供输入验证图标提示
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                content: {
+                    validators: {
+                        notEmpty: {
+                            message: '回复内容不能为空'
+                        },
+                    }
+                }
+            },
+        });
+    });
+</script>
+</body>
+</html>

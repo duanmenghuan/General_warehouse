@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>学生用户修改</title>
+
+    <link th:href="@{/sources/css/bootstrap.css}" rel="stylesheet">
+    <link th:href="@{/sources/css/materialdesignicons.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/sources/css/bootstrapValidator.css}"/>
+    <link th:href="@{/sources/css/style.min.css}" rel="stylesheet">
+
+    <script th:src="@{/sources/js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/bootstrapValidator.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/perfect-scrollbar.min.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/main.min.js}"></script>
+</head>
+
+<body>
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <!--左侧导航-->
+        <div th:insert="/teacher/teacher_index::teacher_side"></div>
+        <!--End 左侧导航-->
+
+        <!--头部信息-->
+        <div th:insert="/teacher/teacher_index::teacher_header"></div>
+        <!--End 头部信息-->
+
+        <!--页面主要内容-->
+        <main class="lyear-layout-content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div>
+                                    <form id="updateStuInfo" name="updateStuInfo" method="post"
+                                          th:action="@{/teacher/updateStudent}" class="form-horizontal">
+                                        <input type="hidden" name="studentId" th:value="${student.studentId}">
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="studentAccount">账号名</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="studentAccount"
+                                                       id="studentAccount" th:value="${student.studentAccount}"
+                                                       disabled="disabled"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="studentNo">学号</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="studentNo" id="studentNo"
+                                                       th:value="${student.studentNo}" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="studentName">姓名</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="studentName"
+                                                       id="studentName" th:value="${student.studentName}" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="studentClassg">班级</label>
+                                            <div class="col-md-7">
+                                                <select class="form-control" name="studentClassg" id="studentClassg" disabled>
+                                                    <option selected="selected" disabled>--请选择--</option>
+                                                    <option value="Wlian"
+                                                            th:selected="'Wlian' == ${student.studentClassg}">物联班
+                                                    </option>
+                                                    <option value="Xguan"
+                                                            th:selected="'Xguan' == ${student.studentClassg}">信管班
+                                                    </option>
+                                                    <option value="Gzaojia"
+                                                            th:selected="'Gzaojia' == ${student.studentClassg}">工程造价班
+                                                    </option>
+                                                    <option value="Wli" th:selected="'Wli' == ${student.studentClassg}">
+                                                        物理班
+                                                    </option>
+                                                    <option value="Smei"
+                                                            th:selected="'Smei' == ${student.studentClassg}">数媒班
+                                                    </option>
+                                                    <option value="Rqi" th:selected="'Rqi' == ${student.studentClassg}">
+                                                        燃气班
+                                                    </option>
+                                                    <option value="Jhuan"
+                                                            th:selected="'Jhuan' == ${student.studentClassg}">建环班
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="studentMajor">专业</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="studentMajor"
+                                                       id="studentMajor" th:value="${student.studentMajor}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="studentGrade">年级</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="studentGrade"
+                                                       id="studentGrade" th:value="${student.studentGrade}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="studentPhone">电话</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="studentPhone"
+                                                       id="studentPhone" th:value="${student.studentPhone}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="studentEmail">邮箱</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="studentEmail"
+                                                       id="studentEmail" th:value="${student.studentEmail}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label">就业状态</label>
+                                            <div class="col-md-5">
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="studentEmployment"
+                                                           th:checked="'1' == ${student.studentEmployment}" value="1">待就业
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="studentEmployment"
+                                                           th:checked="'2' == ${student.studentEmployment}" value="2">已就业
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div th:if="${student.studentEmployment == 2}" class="form-group">
+                                            <label class="col-md-1 control-label" for="studentEmail">就业单位：</label>
+                                            <div class="col-md-5">
+                                                <input type="text" class="form-control" name="employment" th:value="${student.getEmployment()}" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="studentResume">个人简历</label>
+                                            <div class="col-md-7">
+                                                <textarea class="form-control" name="studentResume" id="studentResume"
+                                                          th:text="${student.studentResume}" rows="10"></textarea>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary col-md-offset-4" id="updateBtn"
+                                                onclick="{if(confirm('您确定要修改吗?')){
+                                            this.document.updateStuInfo.submit();
+                                            return true;}return false;
+                                        }">修改信息
+                                        </button>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+        <!--End 页面主要内容-->
+    </div>
+</div>
+</div>
+<script>
+    $(function () {
+        $('#updateStuInfo').bootstrapValidator({
+            message: 'This value is not valid',
+            excluded: ':disabled',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                studentName: {
+                    validators: {
+                        notEmpty: {
+                            message: '学生姓名不能为空'
+                        }
+                    }
+                }
+            }
+        })
+    })
+</script>
+</body>
+</html>

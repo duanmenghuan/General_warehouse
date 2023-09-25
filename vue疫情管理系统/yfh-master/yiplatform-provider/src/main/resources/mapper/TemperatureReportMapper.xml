@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.yiplatform.mapper.TemperatureReportMapper">
+
+    <resultMap id="BaseResultMap" type="cn.yiplatform.entity.TemperatureReport">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="uid" column="uid" jdbcType="BIGINT"/>
+            <result property="temperature" column="temperature" jdbcType="FLOAT"/>
+            <result property="submitTime" column="submit_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,uid,temperature,submit_time
+    </sql>
+
+    <select id="selectAllByIds" resultMap="BaseResultMap">
+        select *
+        from temperature_report join user
+        on temperature_report.uid = user.id
+        where user.id in
+        <if test="_parameter!=null">
+            <foreach close=")" collection="idList" item="id" open="("
+                     separator=",">
+                #{id}
+            </foreach>
+        </if>
+        order by submit_time desc
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select *
+        from temperature_report join user
+        on temperature_report.uid = user.id
+        order by submit_time desc
+    </select>
+
+
+    <select id="selectAllLikeAccount" resultMap="BaseResultMap">
+        select *
+        from temperature_report join user
+        on temperature_report.uid = user.id
+        where account like #{account}
+    </select>
+    <select id="selectAllByAccountAndSubmitTimeBetween" resultMap="BaseResultMap">
+        select *
+        from temperature_report join user
+        on temperature_report.uid = user.id
+        where
+        user.id in
+        <if test="_parameter!=null">
+            <foreach close=")" collection="idList" item="id" open="("
+                     separator=",">
+                #{id}
+            </foreach>
+        </if>
+        AND submit_time between #{beginSubmitTime} and #{endSubmitTime}
+    </select>
+    <select id="selectAllByWrappers" resultMap="BaseResultMap">
+        select *
+        from temperature_report join user
+        on temperature_report.uid = user.id
+        where 1 = 1
+        <if test="idList != null and idList.size() > 0">
+            and user.id in
+            <foreach close=")" collection="idList" item="id" open="("
+                     separator=",">
+                #{id}
+            </foreach>
+        </if>
+        <if test="beginSubmitTime != null and endSubmitTime != null">
+            AND submit_time between #{beginSubmitTime} and #{endSubmitTime}
+        </if>
+        <if test="account != null">
+            AND account like #{account}
+        </if>
+        order by submit_time desc
+    </select>
+
+    <select id="selectAllByFillStatus" resultMap="BaseResultMap">
+        <if test="fillStatus == 0">
+            select user.user_name, user.account
+            from user
+            where user.fill_status = #{fillStatus}
+        </if>
+        <if test="fillStatus == 1">
+            select *
+            from temperature_report join user
+            on temperature_report.uid = user.id
+            where user.fill_status = 1 and TO_DAYS(submit_time) = TO_DAYS(NOW())
+        </if>
+    </select>
+
+    <select id="selectAbnormalTempData" resultMap="BaseResultMap">
+        select *
+        from temperature_report join user
+        on temperature_report.uid = user.id
+        where temperature_report.temperature >= 37.3
+        order by temperature_report.temperature desc
+    </select>
+</mapper>

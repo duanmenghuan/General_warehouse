@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.yiplatform.mapper.BusinessReportMapper">
+
+    <resultMap id="BaseResultMap" type="cn.yiplatform.entity.BusinessReport">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="uid" column="uid" jdbcType="BIGINT"/>
+            <result property="startPlace" column="start_place" jdbcType="VARCHAR"/>
+            <result property="endPlace" column="end_place" jdbcType="VARCHAR"/>
+            <result property="beginTime" column="begin_time" jdbcType="TIMESTAMP"/>
+            <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+            <result property="trafficTool" column="traffic_tool" jdbcType="VARCHAR"/>
+            <result property="backBeginTime" column="back_begin_time" jdbcType="TIMESTAMP"/>
+            <result property="backEndTime" column="back_end_time" jdbcType="TIMESTAMP"/>
+            <result property="backTrafficTool" column="back_traffic_tool" jdbcType="VARCHAR"/>
+            <result property="isComplete" column="is_complete" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,uid,start_place,
+        end_place,begin_time,end_time,
+        traffic_tool,back_begin_time,back_end_time,
+        back_traffic_tool,is_complete,create_time,
+        is_deleted
+    </sql>
+
+    <select id="selectAllByIds" resultMap="BaseResultMap">
+        select *
+        from business_report join user
+        on business_report.uid = user.id
+        where user.id in
+        <if test="idList != null">
+            <foreach close=")" collection="idList" item="id" open="("
+                     separator=",">
+                #{id}
+            </foreach>
+        </if>
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select *
+        from business_report join user
+        on business_report.uid = user.id
+    </select>
+
+    <select id="selectAllLikeAccount" resultMap="BaseResultMap">
+        select *
+        from business_report join user
+        on business_report.uid = user.id
+        where account like #{account}
+    </select>
+    <select id="selectAllByAccountAndCreateTimeBetween" resultMap="BaseResultMap">
+        select *
+        from business_report join user
+        on business_report.uid = user.id
+        where user.id in
+        <if test="idList != null">
+            <foreach close=")" collection="idList" item="id" open="("
+                     separator=",">
+                #{id}
+            </foreach>
+        </if>
+        AND create_time between #{beginCreateTime} and #{endCreateTime}
+    </select>
+    <select id="selectAllByWrappers" resultMap="BaseResultMap">
+        select *
+        from business_report join user
+        on business_report.uid = user.id
+        where 1 = 1
+        <if test="idList != null and idList.size() > 0">
+            and user.id in
+            <foreach close=")" collection="idList" item="id" open="("
+                     separator=",">
+                #{id}
+            </foreach>
+        </if>
+        <if test="beginSubmitTime != null and endSubmitTime != null">
+            AND create_time between #{beginSubmitTime} and #{endSubmitTime}
+        </if>
+        <if test="account != null">
+            AND account like #{account}
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        order by create_time desc
+    </select>
+
+    <select id="selectByReportId" resultMap="BaseResultMap">
+        select *
+        from business_report join user
+        on business_report.uid = user.id
+        where business_report.id = #{reportId}
+    </select>
+</mapper>

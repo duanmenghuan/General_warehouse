@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>职位列表</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/sources/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/sources/icon/iconfont.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/index.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/job-content.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/font-awesome-4.7.0/css/font-awesome.css}"/>
+
+    <link rel="stylesheet" th:href="@{/sources/css/component.css}"/>
+    <link rel="stylesheet" th:href="@{/sources/css/normalize.css}"/>
+
+    <script th:src="@{/sources/js/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/sources/js/bootstrap.js}"></script>
+    <script th:src="@{/sources/js/modernizr.custom.js}"></script>
+</head>
+<body>
+<div class="wrap">
+
+    <!--    抽签公共片段  导航栏-->
+    <div th:insert="~{/student/student_index.html::student_navigation}"></div>
+
+    <div class="search-content  container">
+        <!-- 搜索栏-->
+        <div class="search-box text-center " id="SearchForm">
+            <form class="text-center row" name="search_form" th:action="@{/student/position/getPositionByKey}" method="get">
+                <input class="search-input col-md-7 col-md-offset-1" id="key" name="key" type="text"
+                       placeholder="搜索职位名称">
+                <input class="col-md-2" type="submit" id="search-button" value="搜索"/>
+            </form>
+        </div>
+    </div>
+    <!--职位列表-->
+    <div class="job-list-container container">
+        <hr>
+        <div class="text-center" th:if="${positions.isEmpty()}">
+            <img th:src="@{/sources/images/project/kong.png}" />
+        </div>
+        <div class="content job-content" th:if="!${positions.isEmpty()}">
+            <div class="col-lg-4 summary-border job-box" th:each="position:${positions}">
+                <div class="job-summary">
+                    <div class="line-1 row">
+                        <div class="job-name col-md-6">
+                            <a th:href="@{'/student/position/'+${position.positionId}}">
+                                [[${position.positionName}]]
+                                <span class="fa fa-comment"></span>
+                            </a>
+                        </div>
+                        <div class="job-salary col-md-6  text-right">
+                            [[${position.positionMinSalary}]]元-[[${position.positionMaxSalary}]]元
+                        </div>
+                    </div>
+
+                    <div class="line-3 job-tag-content row" style="margin-left: -58px">
+                        <ul>
+                            <li class="job-tag" style="width:190px">工作城市：<span style="color: black">[[${position.positionCity}]]</span></li>
+                            <li class="job-tag" style="width:150px">招聘人数：<span style="color: black">[[${position.positionQuota}]]</span>人</li>
+                        </ul>
+                    </div>
+                    <div class="line-3 job-tag-content row" style="margin-left: -58px">
+                        <ul>
+                            <li class="job-tag" style="width: 350px">
+                                发布日期：：<span style="color: black">[[${#dates.format(position.positionRelease,'yyyy-MM-dd HH:mm')}]]</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="company">
+                        <img style="width: 70px;height: 60px;margin-left: 20px" class="img-rounded" th:src="@{/sources/images/project/kong.png}"/>
+                        <div class="company-right">
+                            <div class="row company-name">
+                                <a th:href="@{'/student/position/getPositionByCompany/' + ${position.positionCompany}}">[[${position.company.companyName}]]</a>
+                            </div>
+                            <div class="row company-description">
+                                [[${position.company.companyName}]]
+                            </div>
+                            <div class="row company-description">
+                                [[${position.company.companyAddress}]]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+
+</script>
+</body>
+</html>

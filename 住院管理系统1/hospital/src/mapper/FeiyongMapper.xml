@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.dao.FeiyongMapper">
+
+    <resultMap id="BaseResultMap" type="com.demo.vo.Feiyong" >
+            <result column="id" property="id" />
+            <result column="feiyong_no" property="feiyongNo" />
+            <result column="feiyong_zhuyuanhao" property="feiyongZhuyuanhao" />
+            <result column="feiyong_name" property="feiyongName" />
+            <result column="feiyong_jine" property="feiyongJine" />
+            <result column="feiyong_jiaofeifangshi" property="feiyongJiaofeifangshi" />
+            <result column="feiyong_jiaofeishijian" property="feiyongJiaofeishijian" />
+            <result column="feiyong_text" property="feiyongText" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        `id`,`feiyong_no`,`feiyong_zhuyuanhao`,`feiyong_name`,`feiyong_jine`,`feiyong_jiaofeifangshi`,`feiyong_jiaofeishijian`,`feiyong_text`
+    </sql>
+
+    <!--新增-->
+    <insert id="doCreate" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.demo.vo.Feiyong">
+        INSERT INTO `t_feiyong`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                    <if test ='id != null'>`id`,</if>
+                    <if test ='feiyongNo != null'>`feiyong_no`,</if>
+                    <if test ='feiyongZhuyuanhao != null'>`feiyong_zhuyuanhao`,</if>
+                    <if test ='feiyongName != null'>`feiyong_name`,</if>
+                    <if test ='feiyongJine != null'>`feiyong_jine`,</if>
+                    <if test ='feiyongJiaofeifangshi != null'>`feiyong_jiaofeifangshi`,</if>
+                    <if test ='feiyongJiaofeishijian != null'>`feiyong_jiaofeishijian`,</if>
+                    <if test ='feiyongText != null'>`feiyong_text`</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                    <if test ='id != null'>#{id},</if>
+                    <if test ='feiyongNo != null'>#{feiyongNo},</if>
+                    <if test ='feiyongZhuyuanhao != null'>#{feiyongZhuyuanhao},</if>
+                    <if test ='feiyongName != null'>#{feiyongName},</if>
+                    <if test ='feiyongJine != null'>#{feiyongJine},</if>
+                    <if test ='feiyongJiaofeifangshi != null'>#{feiyongJiaofeifangshi},</if>
+                    <if test ='feiyongJiaofeishijian != null'>#{feiyongJiaofeishijian},</if>
+                    <if test ='feiyongText != null'>#{feiyongText}</if>
+        </trim>
+    </insert>
+
+    <!--批量删除-->
+    <delete id="doRemoveBatch" parameterType="java.util.Collection">
+        DELETE FROM `t_feiyong` WHERE `id` IN
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--修改-->
+    <update id="doUpdate" parameterType="com.demo.vo.Feiyong">
+        UPDATE `t_feiyong`
+        <set>
+                <if test ='id != null'>`id` = #{id},</if>
+                <if test ='feiyongNo != null'>`feiyong_no` = #{feiyongNo},</if>
+                <if test ='feiyongZhuyuanhao != null'>`feiyong_zhuyuanhao` = #{feiyongZhuyuanhao},</if>
+                <if test ='feiyongName != null'>`feiyong_name` = #{feiyongName},</if>
+                <if test ='feiyongJine != null'>`feiyong_jine` = #{feiyongJine},</if>
+                <if test ='feiyongJiaofeifangshi != null'>`feiyong_jiaofeifangshi` = #{feiyongJiaofeifangshi},</if>
+                <if test ='feiyongJiaofeishijian != null'>`feiyong_jiaofeishijian` = #{feiyongJiaofeishijian},</if>
+                <if test ='feiyongText != null'>`feiyong_text` = #{feiyongText}</if>
+        </set>
+        WHERE `id` = #{id}
+    </update>
+
+    <!--获取-->
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> FROM `t_feiyong` WHERE `id` = #{id}
+    </select>
+
+    <!--列表-->
+    <select id="findAllSplit" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> FROM `t_feiyong`
+        <where>
+            <if test="searchColumn != null and searchColumn != '' and keyword != null and keyword != ''">
+                ${searchColumn} LIKE CONCAT('%',#{keyword},'%')  AND
+            </if>
+            1=1
+        </where>
+        ORDER BY id ASC
+        <if test="startIndex != null and pageSize != null">
+            LIMIT #{startIndex},#{pageSize};
+        </if>
+    </select>
+    <!--数量-->
+    <select id="getAllCount" parameterType="java.util.Map" resultType="Integer">
+        SELECT COUNT(*) FROM `t_feiyong`
+        <where>
+            <if test="searchColumn != null and searchColumn != '' and keyword != null and keyword != ''">
+                ${searchColumn} LIKE CONCAT('%',#{keyword},'%')  AND
+            </if>
+            1=1
+        </where>
+    </select>
+</mapper>

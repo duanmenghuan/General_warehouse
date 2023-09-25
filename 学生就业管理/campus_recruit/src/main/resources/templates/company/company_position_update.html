@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>修改职位信息</title>
+
+    <link th:href="@{/sources/css/bootstrap.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/sources/css/bootstrapValidator.css}"/>
+    <link th:href="@{/sources/css/materialdesignicons.min.css}" rel="stylesheet">
+    <link th:href="@{/sources/css/style.min.css}" rel="stylesheet">
+
+    <script th:src="@{/sources/js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/bootstrapValidator.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/perfect-scrollbar.min.js}"></script>
+    <script type="text/javascript" th:src="@{/sources/js/main.min.js}"></script>
+</head>
+
+<body>
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <!--左侧导航-->
+        <div th:insert="~{/company/company_index.html::company_side}"></div>
+        <!--End 左侧导航-->
+
+        <!--头部信息-->
+        <div th:insert="~{/company/company_index.html::company_header}"></div>
+        <!--End 头部信息-->
+
+        <!--页面主要内容-->
+        <main class="lyear-layout-content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div>
+                                    <form id="updatePosition" name="publishPosition" method="post" th:action="@{/company/updatePosition}" class="form-horizontal">
+                                        <input type="hidden" name="positionId" th:value="${position.positionId}">
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="positionName">职位名称</label>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control" name="positionName" id="positionName" th:value="${position.positionName}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="positionMinSalary">最低薪酬</label>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control" name="positionMinSalary" id="positionMinSalary" th:value="${position.positionMinSalary}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="positionMaxSalary">最高薪酬</label>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control" name="positionMaxSalary" id="positionMaxSalary" th:value="${position.positionMaxSalary}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="positionQuota">招聘人数</label>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control" name="positionQuota" id="positionQuota" th:value="${position.positionQuota}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="positionCity" >工作城市</label>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control" name="positionCity" id="positionCity" th:value="${position.positionCity}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="positionDescription">岗位职责</label>
+                                            <div class="col-md-6">
+                                                <textarea class="form-control"   name="positionDescription" id="positionDescription" rows="10" th:text="${position.positionDescription}"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="positionRequire">任职要求</label>
+                                            <div class="col-md-6">
+                                                <textarea class="form-control"   name="positionRequire" id="positionRequire" rows="10" th:text="${position.positionRequire}"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-1 control-label" for="positionWelfare">福利待遇</label>
+                                            <div class="col-md-6">
+                                                <textarea class="form-control"   name="positionWelfare" id="positionWelfare" rows="10" th:text="${position.positionWelfare}"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary col-md-offset-4" id="updateBtn" onclick="{if(confirm('您确定要修改职位信息吗?')){
+                                            this.document.publishPosition.submit();
+                                            return true;}return false;
+                                        }">修改发布信息</button>
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+        <!--End 页面主要内容-->
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#updatePosition").bootstrapValidator({
+            message: 'This value is not valid',
+            live: 'enable',//验证时机，enabled是内容有变化就验证（默认），disabled和submitted是提交再验证
+            excluded: [':disabled', ':hidden'],//排除无需验证的控件，比如被禁用的或者被隐藏的
+            //提供输入验证图标提示
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                positionName: {
+                    validators: {
+                        notEmpty: {
+                            message: '职位名称不能为空'
+                        },
+                    }
+                },
+                positionMinSalary: {
+                    validators: {
+                        notEmpty: {
+                            message: '最低薪酬不能为空'
+                        },
+                        regexp: {
+                            regexp: /^[0-9]+$/,
+                            message: '只能输入数字'
+                        }
+                    },
+                },
+                positionMaxSalary: {
+                    validators: {
+                        notEmpty: {
+                            message: '最高薪酬不能为空'
+                        },
+                        regexp: {
+                            regexp: /^[0-9]+$/,
+                            message: '只能输入数字'
+                        }
+                    }
+                },
+                positionQuota: {
+                    validators: {
+                        notEmpty: {
+                            message: '招聘人数不能为空'
+                        },
+                        regexp: {
+                            regexp: /^[0-9]+$/,
+                            message: '只能输入数字'
+                        }
+                    }
+                },
+                positionCity: {
+                    validators: {
+                        notEmpty: {
+                            message: '工作城市不能为空'
+                        }
+                    }
+                },
+                positionRequire: {
+                    validators: {
+                        notEmpty: {
+                            message: '任职要求不能为空'
+                        }
+                    }
+                },
+                positionDescription: {
+                    validators: {
+                        notEmpty: {
+                            message: '岗位职责不能为空'
+                        }
+                    }
+                },
+            },
+        });
+    });
+</script>
+</body>
+</html>
